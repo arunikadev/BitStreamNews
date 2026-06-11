@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_category_card.xml
+    Single category tile for the grid RecyclerView.
+    Matches Stitch category browse "LVL XX" game-level-select style:
+      ├── "LVL XX" badge (top-right corner, amber bg)
+      ├── Icon: large text icon (unicode or drawable)
+      ├── Category name (bold, pixel font, accent color)
+      └── Description (muted, small)
+    Background: pixel card with 6dp hard green shadow offset.
+-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_margin="6dp"
+    android:background="@drawable/bg_category_tile"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <!-- Main content column -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:gravity="bottom">
+
+        <!-- Category icon (using text/emoji for now; can swap to drawable) -->
+        <TextView
+            android:id="@+id/tv_category_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/press_start_2p"
+            android:text="[*]"
+            android:textColor="?attr/colorPixelAccent"
+            android:textSize="18sp"
+            tools:text="[@]" />
+
+        <!-- Category name -->
+        <TextView
+            android:id="@+id/tv_category_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/press_start_2p"
+            android:text="WORLD"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="8sp"
+            android:textAllCaps="true"
+            android:singleLine="true"
+            tools:text="WORLD" />
+
+        <!-- Description (muted) -->
+        <TextView
+            android:id="@+id/tv_category_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/press_start_2p"
+            android:text="Global data stream"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="5sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:ignore="SmallSp"
+            tools:text="Global event data stream" />
+
+    </LinearLayout>
+
+    <!-- LVL badge: anchored top-right corner -->
+    <TextView
+        android:id="@+id/tv_level_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:background="?attr/colorPixelHighlight"
+        android:fontFamily="@font/press_start_2p"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:text="LVL 01"
+        android:textColor="?attr/colorSurface"
+        android:textSize="5sp"
+        android:textAllCaps="true"
+        tools:ignore="SmallSp" />
+
+</FrameLayout>

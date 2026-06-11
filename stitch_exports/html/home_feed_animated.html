@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BIT-STREAM NEWS | v1.0</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#dec800",
+                        "inverse-primary": "#006e16",
+                        "primary": "#ebffe2",
+                        "on-background": "#e5e2e1",
+                        "outline-variant": "#3b4b37",
+                        "outline": "#84967e",
+                        "on-primary-fixed-variant": "#00530e",
+                        "on-tertiary-container": "#c4000d",
+                        "error-container": "#93000a",
+                        "tertiary": "#fff7f6",
+                        "primary-container": "#00ff41",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#00e639",
+                        "on-secondary-fixed": "#201c00",
+                        "on-tertiary-fixed": "#410001",
+                        "on-primary-fixed": "#002203",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "on-secondary-fixed-variant": "#504700",
+                        "on-surface-variant": "#b9ccb2",
+                        "on-primary-container": "#007117",
+                        "on-secondary": "#373100",
+                        "secondary": "#ffffff",
+                        "on-primary": "#003907",
+                        "surface-container": "#201f1f",
+                        "on-secondary-container": "#716500",
+                        "surface-bright": "#3a3939",
+                        "surface-dim": "#131313",
+                        "inverse-surface": "#e5e2e1",
+                        "inverse-on-surface": "#313030",
+                        "tertiary-fixed": "#ffdad5",
+                        "background": "#131313",
+                        "surface-variant": "#353534",
+                        "secondary-container": "#fde400",
+                        "surface-container-high": "#2a2a2a",
+                        "on-surface": "#e5e2e1",
+                        "secondary-fixed": "#fde400",
+                        "surface": "#131313",
+                        "on-error": "#690005",
+                        "primary-fixed": "#72ff70",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#930007",
+                        "tertiary-container": "#ffd2cc",
+                        "on-tertiary": "#690003",
+                        "primary-fixed-dim": "#00e639",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-highest": "#353534",
+                        "surface-container-lowest": "#0e0e0e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "unit": "8px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Space Mono"],
+                        "body-lg": ["Space Mono"],
+                        "body-md": ["Space Mono"],
+                        "headline-lg-mobile": ["Space Mono"],
+                        "label-caps": ["Space Mono"],
+                        "headline-md": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-1px", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .scanline-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(to right, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .scanline-sweep {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100px;
+            background: linear-gradient(0deg, rgba(0, 230, 57, 0) 0%, rgba(0, 230, 57, 0.05) 50%, rgba(0, 230, 57, 0) 100%);
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+            z-index: 101;
+        }
+        .blink { animation: blink 1s step-end infinite; }
+        .marquee-container { overflow: hidden; white-space: nowrap; }
+        .marquee-content { display: inline-block; animation: marquee 15s linear infinite; }
+        .pixel-border {
+            box-shadow: 
+                0 -4px 0 -2px #131313, 0 4px 0 -2px #131313,
+                -4px 0 0 -2px #131313, 4px 0 0 -2px #131313,
+                0 -2px 0 0 #84967e, 0 2px 0 0 #84967e,
+                -2px 0 0 0 #84967e, 2px 0 0 0 #84967e;
+        }
+        body { background-color: #131313; color: #e5e2e1; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1c1b1b; }
+        ::-webkit-scrollbar-thumb { background: #00e639; border: 2px solid #131313; }
+        
+        .card-pop {
+            transition: all 0.1s ease-out;
+        }
+        .card-pop:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 8px 8px 0px 0px rgba(0,230,57,1);
+            border-color: #00e639;
+        }
+        .card-pop:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px rgba(0,230,57,1);
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- CRT Overlay -->
+<div class="scanline-overlay"></div>
+<div class="scanline-sweep"></div>
+<!-- Top Navigation Bar -->
+<header class="w-full top-0 sticky z-50 bg-background dark:bg-background border-b-2 border-outline-variant shadow-[4px_4px_0px_0px_rgba(0,230,57,1)] flex justify-between items-center px-margin-mobile py-unit max-w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="terminal">terminal</span>
+<h1 class="font-headline-md text-headline-md uppercase tracking-tighter text-secondary-fixed-dim blink">NEWS_GRID_v1.0</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary-fixed-dim hover:bg-surface-variant active:translate-x-[2px] active:translate-y-[2px] p-1" data-icon="search">search</button>
+</div>
+</header>
+<!-- Marquee Breaking Ticker -->
+<div class="bg-primary-container text-on-primary-container border-b-2 border-outline py-1 marquee-container">
+<div class="marquee-content font-label-caps text-label-caps font-bold">
+            BREAKING: PIXEL ART REVOLUTION CONTINUES... SYSTEM UPDATE 2.4.0 DEPLOYED... NEW BIT-STREAM SERVERS ONLINE... DATA FRAGMENTATION MINIMAL... BREAKING: PIXEL ART REVOLUTION CONTINUES... SYSTEM UPDATE 2.4.0 DEPLOYED... NEW BIT-STREAM SERVERS ONLINE... DATA FRAGMENTATION MINIMAL...
+        </div>
+</div>
+<main class="pb-[80px] px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<!-- Search & Filters -->
+<section class="mt-stack-lg space-y-stack-md">
+<div class="relative group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary-fixed-dim font-bold text-headline-md">&gt;</span>
+<input class="w-full bg-surface-container-low border-2 border-outline text-primary-fixed-dim font-body-lg text-body-lg pl-10 pr-4 py-3 focus:outline-none focus:border-primary-container transition-colors placeholder:text-outline-variant" placeholder="SEARCH_DATABASE..." type="text"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 w-[8px] h-[16px] bg-primary-fixed-dim blink"></div>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+<button class="bg-primary-container text-on-primary-container px-4 py-2 border-2 border-outline font-label-caps text-label-caps active:translate-y-1">WORLD</button>
+<button class="bg-surface-container-highest text-on-surface-variant px-4 py-2 border-2 border-outline-variant font-label-caps text-label-caps hover:bg-surface-variant active:translate-y-1 transition-all">TECH</button>
+<button class="bg-surface-container-highest text-on-surface-variant px-4 py-2 border-2 border-outline-variant font-label-caps text-label-caps hover:bg-surface-variant active:translate-y-1 transition-all">GAMES</button>
+<button class="bg-surface-container-highest text-on-surface-variant px-4 py-2 border-2 border-outline-variant font-label-caps text-label-caps hover:bg-surface-variant active:translate-y-1 transition-all">VIBE</button>
+</div>
+</section>
+<!-- News Feed Grid -->
+<section class="mt-stack-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 (Large/Featured) -->
+<article class="md:col-span-2 group relative bg-surface-container border-2 border-primary-fixed-dim shadow-[4px_4px_0px_0px_rgba(0,230,57,1)] transition-all card-pop">
+<div class="bg-secondary-container text-on-secondary-container px-unit py-1 border-b-2 border-primary-fixed-dim flex justify-between items-center">
+<span class="font-label-caps text-label-caps">TOP_STORY // URGENT</span>
+<span class="font-label-caps text-label-caps">[14:20:05]</span>
+</div>
+<div class="p-4 flex flex-col md:flex-row gap-4">
+<div class="w-full md:w-1/3 aspect-square border-2 border-outline-variant overflow-hidden bg-black flex items-center justify-center relative">
+<img class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 transition-all duration-500" data-alt="A high-contrast, low-resolution pixel art scene of a futuristic city skyline with glowing green neon lights and CRT scanlines. The sky is a deep void black, and the buildings are blocky and stylized. A bright green pulse emanates from a central server tower. The atmosphere is nostalgic and digitally brutalist." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4IXdTkpm5bI6I3c9110IvQSPJd2qeb-EFkvks8WeicoI3Nwb1IyZcUDMevpaWhxgquVk02F6udLz65lOgyDO9GZXP_nObvGaqxkOq60N7Z0G2lLCy-xS4-viLMkcM402pH8b1DbyO770M0u4wQNpMmcq4rbsA_OIlWCCAvNioEgWoZhLXzMzMC7pdPUcWoWjccUcrH3Ji0W85EBc8eO5yEg6kTCMU0i8r0gHCmEdOIK4hAYZ-cblhW8S3dheg_9H3sR7Y6TtZ_cBa"/>
+<div class="absolute inset-0 bg-primary-container/10 mix-blend-overlay"></div>
+</div>
+<div class="flex-1 space-y-2">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary-fixed-dim leading-tight uppercase">Cyber-Aesthetics Take Over Mainstream Design Pipelines</h2>
+<p class="text-on-surface-variant font-body-md text-body-md line-clamp-3">In a shocking turn of events, major design firms are pivoting back to 8-bit visual languages. Analysts suggest the 'Digital Brutalism' movement is more than just a trend—it's a paradigm shift.</p>
+<div class="pt-2 flex justify-between items-center">
+<span class="inline-block bg-primary-fixed-dim text-on-primary px-2 py-0.5 font-label-caps text-label-caps">TECH_REPORT</span>
+<button class="text-secondary-fixed-dim underline font-label-caps text-label-caps hover:text-primary-container transition-colors">READ_MORE_&gt;</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-surface-container border-2 border-outline shadow-[4px_4px_0px_0px_rgba(132,150,126,0.5)] transition-all card-pop">
+<div class="bg-surface-variant text-on-surface px-unit py-1 border-b-2 border-outline flex justify-between">
+<span class="font-label-caps text-label-caps">GAMES</span>
+<span class="font-label-caps text-label-caps">[13:45]</span>
+</div>
+<div class="p-stack-sm space-y-unit">
+<div class="aspect-video border-2 border-outline-variant bg-black relative">
+<img class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" data-alt="A retro gaming setup featuring an old CRT television screen displaying a colorful 16-bit platformer game. The room is dimly lit by the purple and blue glow of the screen. A classic gamepad lies on a wooden desk. The scene evokes a deep sense of nostalgia for 90s computing culture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpdJcNWTufQCSTJfalHSUNVGS-G9Cf08n7NyEsXqWljv23rfyOkQwHWKZNdX9nOQ673aZch7MIuYVA0QPwp-YC8SQoBv0jI6jqfwJx8BiCTSXexJzV5Q9fzsR0-la5aofwURflhRc9WyqQYmhhLykzMaqKeXiRm5gzgVL_clMr-mzke-0JJV0xFdeXLolEe15dC38YUCGUIksPi3JMxvE4DI8GkGUaEM46DI_1G16_fEfaNzq960b7Coq3-RfnI49jH4vLKPFYCryC"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-secondary-fixed-dim uppercase">The Return of the Floppy Disk?</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-2">Physical media enthusiasts are resurrecting ancient storage formats for indie game distribution...</p>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="bg-surface-container border-2 border-outline shadow-[4px_4px_0px_0px_rgba(132,150,126,0.5)] transition-all card-pop">
+<div class="bg-surface-variant text-on-surface px-unit py-1 border-b-2 border-outline flex justify-between">
+<span class="font-label-caps text-label-caps">WORLD</span>
+<span class="font-label-caps text-label-caps">[12:12]</span>
+</div>
+<div class="p-stack-sm space-y-unit">
+<div class="aspect-video border-2 border-outline-variant bg-black relative">
+<img class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" data-alt="A macro shot of a complex green circuit board with glowing golden pathways and soldered microchips. The lighting is low-key, highlighting the mechanical precision and metallic textures. Tiny sparks of digital energy seem to travel along the lines. The aesthetic is industrial and high-tech." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIxzBbjAo3O8oDfiGYD8Ck6YYomqVKGYgwSkdVElXMMrk2zS-rU9viVIHYA5DDFzUlaexpRlNMIUtpoor7tv6bN7w-EP5GTtKLA_rWNougNWBAdlgUWHwytEp5a54-6NOpXKZFCyoO-dzB5kRzieDPTCB3tf1Ox2fLMkzwWMgcdgr5qTDA2ZN8brpn57MxqT5V0yiAy3xANMRwQzgrpb2jTPgv0OBc2EtNHlAKBx4cirYOBq67ScrnqWiP9wX0_KEEz6fYe4josVeo"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-secondary-fixed-dim uppercase">Silicon Shortage or Simulation?</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-2">The latest global logistics report suggests a strange anomaly in chip manufacturing quotas...</p>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="bg-surface-container border-2 border-outline shadow-[4px_4px_0px_0px_rgba(132,150,126,0.5)] transition-all card-pop">
+<div class="bg-surface-variant text-on-surface px-unit py-1 border-b-2 border-outline flex justify-between">
+<span class="font-label-caps text-label-caps">VIBE</span>
+<span class="font-label-caps text-label-caps">[09:00]</span>
+</div>
+<div class="p-stack-sm space-y-unit">
+<div class="aspect-video border-2 border-outline-variant bg-black relative">
+<img class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" data-alt="An abstract composition of glitchy digital artifacts and distorted color bars, reminiscent of a dying analog broadcast. Saturated magentas, cyans, and yellows clash against a static-filled background. The mood is chaotic yet artistically structured, capturing the essence of digital decay and vaporwave aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ7-SYi3VsX2qRg4QToCE7bfHYnMGnfrWEzaCq3aYRiyFlplxczKwN7gLXQtN7a6GZj4OuLC3xeUjuDx7f35tDfI33oEub0PzWpp9ZnCAaI8a3EkVmN3ikxJXt2rzcYu_j5-g_9yWm1OSRPHAPe3himnanpwpuMRHAXsNiMDrpEjAXdqCVL9kHe1UwO2JuWgXAK2tL4h-Y1hIimMtVV4rbk1Mv2uT7TYVXnu5caB2DDcFl0qRJeDJFU-gtTvqjYUehS1K0QvMbH9zs"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-secondary-fixed-dim uppercase">Lofi Beats to Hack To</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-2">A new 24/7 stream has taken the underground terminal community by storm...</p>
+</div>
+</article>
+</section>
+<!-- Loading State Indicator -->
+<div class="mt-stack-lg flex flex-col items-center gap-2">
+<div class="font-label-caps text-label-caps text-primary-fixed-dim uppercase">Fetching_More_Data...</div>
+<div class="w-full max-w-xs h-6 border-2 border-outline p-1 flex gap-1">
+<div class="h-full w-4 bg-primary-container"></div>
+<div class="h-full w-4 bg-primary-container"></div>
+<div class="h-full w-4 bg-primary-container"></div>
+<div class="h-full w-4 bg-primary-container animate-pulse"></div>
+<div class="h-full w-4 bg-outline-variant"></div>
+<div class="h-full w-4 bg-outline-variant"></div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center bg-background border-t-4 border-double border-outline h-[64px] z-[60]">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container p-unit border-2 border-outline transition-all duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view" data-weight="fill">grid_view</span>
+<span class="font-label-caps text-label-caps">FEED</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-unit opacity-70 hover:bg-surface-variant active:translate-y-1 transition-all duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-caps text-label-caps">BROWSE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-unit opacity-70 hover:bg-surface-variant active:translate-y-1 transition-all duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">SET</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for console-style typing effect on headlines
+        document.querySelectorAll('h3').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                el.classList.add('text-primary-container');
+            });
+            el.addEventListener('mouseleave', () => {
+                el.classList.remove('text-primary-container');
+            });
+        });
+
+        // Simulating some CRT flickering
+        setInterval(() => {
+            if (Math.random() > 0.98) {
+                document.body.style.opacity = "0.95";
+                setTimeout(() => {
+                    document.body.style.opacity = "1";
+                }, 50);
+            }
+        }, 100);
+    </script>
+</body></html>

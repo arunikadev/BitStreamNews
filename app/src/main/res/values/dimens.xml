@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ================================================================
+         BITSTREAMEWS DIMENSION SYSTEM — 8dp base grid
+         All values are multiples of 8dp (pixel-perfect grid)
+         ================================================================ -->
+
+    <!-- Base unit -->
+    <dimen name="unit">8dp</dimen>
+
+    <!-- Spacing scale -->
+    <dimen name="space_1">4dp</dimen>     <!-- 0.5 unit: pixel border inset -->
+    <dimen name="space_2">8dp</dimen>     <!-- 1 unit: stack-sm, gutter unit -->
+    <dimen name="space_3">12dp</dimen>    <!-- 1.5 unit -->
+    <dimen name="space_4">16dp</dimen>    <!-- 2 units: stack-md, margin-mobile -->
+    <dimen name="space_6">24dp</dimen>    <!-- 3 units -->
+    <dimen name="space_8">32dp</dimen>    <!-- 4 units: stack-lg, margin-desktop -->
+    <dimen name="space_10">40dp</dimen>   <!-- 5 units -->
+    <dimen name="space_12">48dp</dimen>   <!-- 6 units: min touch target -->
+    <dimen name="space_16">64dp</dimen>   <!-- 8 units: bottom nav height -->
+
+    <!-- Margins -->
+    <dimen name="margin_mobile">16dp</dimen>
+    <dimen name="margin_desktop">32dp</dimen>
+    <dimen name="gutter">16dp</dimen>
+
+    <!-- Stack spacing -->
+    <dimen name="stack_sm">8dp</dimen>
+    <dimen name="stack_md">16dp</dimen>
+    <dimen name="stack_lg">32dp</dimen>
+
+    <!-- Component sizes -->
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="ticker_height">32dp</dimen>
+    <dimen name="filter_chip_height">32dp</dimen>
+    <dimen name="news_card_image_height">160dp</dimen>
+    <dimen name="news_card_featured_image_height">200dp</dimen>
+    <dimen name="category_tile_height">120dp</dimen>
+    <dimen name="loading_bar_height">24dp</dimen>
+    <dimen name="progress_bar_height">16dp</dimen>
+
+    <!-- Border widths (pixel art borders) -->
+    <dimen name="border_width_sm">1dp</dimen>
+    <dimen name="border_width">2dp</dimen>
+    <dimen name="border_width_lg">4dp</dimen>
+    <dimen name="border_shadow_offset">4dp</dimen>   <!-- hard shadow offset for pixel button -->
+
+    <!-- Corner radius — ALWAYS 0 for pixel art -->
+    <dimen name="corner_radius">0dp</dimen>
+
+    <!-- Elevation — ALWAYS 0 (pixel buttons use shadow offset, not elevation) -->
+    <dimen name="elevation_none">0dp</dimen>
+
+    <!-- Text sizes (Press Start 2P renders small, so sizes are intentionally smaller than typical) -->
+    <dimen name="text_headline_lg">16sp</dimen>
+    <dimen name="text_headline_md">11sp</dimen>
+    <dimen name="text_headline_sm">10sp</dimen>
+    <dimen name="text_body_lg">8sp</dimen>
+    <dimen name="text_body_md">7sp</dimen>
+    <dimen name="text_label_caps">6sp</dimen>
+
+    <!-- Icon sizes -->
+    <dimen name="icon_sm">16dp</dimen>
+    <dimen name="icon_md">24dp</dimen>
+    <dimen name="icon_lg">32dp</dimen>
+    <dimen name="icon_xl">48dp</dimen>
+    <dimen name="icon_xxl">96dp</dimen>  <!-- Splash logo terminal icon -->
+
+    <!-- Splash screen -->
+    <dimen name="splash_logo_size">192dp</dimen>
+    <dimen name="splash_progress_bar_height">40dp</dimen>
+
+    <!-- GAME OVER text size -->
+    <dimen name="text_game_over">32sp</dimen>
+
+</resources>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_category.xml
+    Category Browse screen — "level select" style.
+    Structure:
+      ├── Pixel Toolbar
+      ├── Status breadcrumb line (left amber border)
+      └── RecyclerView in GridLayoutManager (2 cols)
+           └── each item = item_category_card.xml
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorSurface"
+    tools:context=".ui.category.CategoryFragment">
+
+    <!-- Pixel Toolbar -->
+    <LinearLayout
+        android:id="@+id/toolbar_category"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp"
+        android:background="@drawable/bg_toolbar_pixel">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/press_start_2p"
+            android:text="> BROWSE_CATEGORIES"
+            android:textColor="?attr/colorPixelHighlight"
+            android:textSize="8sp"
+            android:singleLine="true"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/btn_search_cat"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:fontFamily="@font/press_start_2p"
+            android:text="[?]"
+            android:textColor="?attr/colorPixelAccent"
+            android:textSize="8sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/content_description_search"
+            android:background="?attr/selectableItemBackground" />
+
+    </LinearLayout>
+
+    <!-- Breadcrumb status line: amber left border -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/bg_left_border_amber">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/press_start_2p"
+            android:text="System::Status"
+            android:textColor="?attr/colorPixelHighlight"
+            android:textSize="6sp"
+            android:textAllCaps="true"
+            android:layout_marginBottom="4dp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/press_start_2p"
+            android:text="@string/browse_title"
+            android:textColor="?attr/colorPixelAccent"
+            android:textSize="7sp"
+            android:textAllCaps="true"
+            android:layout_marginBottom="4dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Pulsing status dot -->
+            <View
+                android:id="@+id/view_status_dot"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/colorPrimaryContainer" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/press_start_2p"
+                android:text="UPLINK_STABLE // 8_CATEGORIES_FOUND"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="5sp"
+                tools:ignore="SmallSp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!-- Section header: shown in MODE_LIST, hidden in MODE_GRID -->
+    <TextView
+        android:id="@+id/tv_category_section_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/press_start_2p"
+        android:text="> WORLD"
+        android:textColor="?attr/colorPixelAccent"
+        android:textSize="7sp"
+        android:textAllCaps="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <!-- Category grid / article list RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_categories"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
+        android:scrollbars="none"
+        tools:listitem="@layout/item_category_card"
+        tools:itemCount="8" />
+
+</LinearLayout>

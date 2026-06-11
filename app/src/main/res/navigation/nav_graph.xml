@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    nav_graph.xml — BitStreamNews Navigation Graph
+    ═══════════════════════════════════════════════
+    Scope: Fragment-only navigation inside MainActivity.
+    NewsDetailActivity is launched via explicit Intent — NOT part of this graph.
+
+    ┌─────────────────────────────────────────────────────────┐
+    │                    NAV GRAPH MAP                        │
+    │                                                         │
+    │   [HomeFeedFragment] ──action_home_to_category──▶       │
+    │         ▲  ▲         ──action_home_to_settings──▶       │
+    │         │  │                    │               │       │
+    │         │  └───action_cat_to_home   action_set_to_home  │
+    │         │                      │               │       │
+    │   [CategoryFragment]    [SettingsFragment] ────┘       │
+    │         │                                              │
+    │         └──action_category_to_home──────────────▶      │
+    └─────────────────────────────────────────────────────────┘
+
+    Transitions: pixel-style linear slide (no fade/crossfade).
+      Forward:  enter=slide_in_right,  exit=slide_out_left
+      Pop-back: enter=slide_in_left,   exit=slide_out_right
+
+    Bottom nav tabs (Home↔Category↔Settings) are treated as
+    SIBLING destinations — not a back-stack. Each action uses
+    popUpTo + inclusive=true to prevent stack accumulation.
+-->
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFeedFragment">
+
+    <!-- ═══════════════════════════════════════════════════════
+         HOME FEED FRAGMENT
+         Start destination — shows news list, ticker, search
+         ═══════════════════════════════════════════════════════ -->
+    <fragment
+        android:id="@+id/homeFeedFragment"
+        android:name="com.example.bit_stream_news.ui.home.HomeFeedFragment"
+        android:label="@string/nav_feed"
+        tools:layout="@layout/fragment_home_feed">
+
+        <!-- Home → Category (forward slide) -->
+        <action
+            android:id="@+id/action_home_to_category"
+            app:destination="@id/categoryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homeFeedFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
+
+        <!-- Home → Settings (forward slide) -->
+        <action
+            android:id="@+id/action_home_to_settings"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homeFeedFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
+
+    </fragment>
+
+    <!-- ═══════════════════════════════════════════════════════
+         CATEGORY FRAGMENT
+         Browse news categories (game level-select grid)
+         ═══════════════════════════════════════════════════════ -->
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.bit_stream_news.ui.category.CategoryFragment"
+        android:label="@string/nav_browse"
+        tools:layout="@layout/fragment_category">
+
+        <!-- Category → Home (back slide — left-to-right) -->
+        <action
+            android:id="@+id/action_category_to_home"
+            app:destination="@id/homeFeedFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/homeFeedFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
+
+        <!-- Category → Settings (forward slide) -->
+        <action
+            android:id="@+id/action_category_to_settings"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homeFeedFragment"
+            app:popUpToInclusive="false"
+            app:launchSingleTop="true" />
+
+    </fragment>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SETTINGS FRAGMENT
+         BIOS-style settings: theme toggle, cache, about
+         ═══════════════════════════════════════════════════════ -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.bit_stream_news.ui.settings.SettingsFragment"
+        android:label="@string/nav_settings"
+        tools:layout="@layout/fragment_settings">
+
+        <!-- Settings → Home (back slide) -->
+        <action
+            android:id="@+id/action_settings_to_home"
+            app:destination="@id/homeFeedFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/homeFeedFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
+
+        <!-- Settings → Category (back slide) -->
+        <action
+            android:id="@+id/action_settings_to_category"
+            app:destination="@id/categoryFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/homeFeedFragment"
+            app:popUpToInclusive="false"
+            app:launchSingleTop="true" />
+
+    </fragment>
+
+</navigation>

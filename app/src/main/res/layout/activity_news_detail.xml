@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    activity_news_detail.xml
+    Full article detail screen.
+    Structure (ScrollView):
+      ├── Toolbar: [←BACK] ... [SHARE]
+      ├── Category badge + timestamp
+      ├── Headline (large, pixel bold, left-bordered)
+      ├── Hero image with pixel outer frame
+      ├── Article body text
+      ├── Source / read-full-article link
+      └── Action buttons: SHARE_LINK | SAVE
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    tools:context=".NewsDetailActivity">
+
+    <!-- AppBar with pixel shadow -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        android:elevation="0dp"
+        app:elevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:background="@drawable/bg_toolbar_pixel">
+
+            <!-- Back button: pixel arrow style -->
+            <LinearLayout
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:background="@drawable/bg_pixel_button_outline"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="UseCompoundDrawables">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/press_start_2p"
+                    android:text="&lt;"
+                    android:textColor="?attr/colorPixelAccent"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/press_start_2p"
+                    android:text="BACK"
+                    android:textColor="?attr/colorPixelAccent"
+                    android:textSize="6sp"
+                    android:textAllCaps="true" />
+            </LinearLayout>
+
+            <!-- Title: centered -->
+            <TextView
+                android:id="@+id/tv_toolbar_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/press_start_2p"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/toolbar_title"
+                android:textColor="?attr/colorPixelAccent"
+                android:textSize="8sp"
+                android:textAllCaps="true"
+                app:layout_constraintEnd_toStartOf="@id/btn_share_toolbar"
+                app:layout_constraintStart_toEndOf="@id/btn_back"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <!-- Share icon button -->
+            <TextView
+                android:id="@+id/btn_share_toolbar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:fontFamily="@font/press_start_2p"
+                android:text="⇪"
+                android:textColor="?attr/colorPixelAccent"
+                android:textSize="14sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/cd_share_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Scrollable content -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="80dp">
+
+            <!-- Category badge + timestamp row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tv_category_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorTickerBackground"
+                    android:fontFamily="@font/press_start_2p"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:text="TOP_STORY"
+                    android:textColor="?attr/colorTickerText"
+                    android:textSize="6sp"
+                    android:textAllCaps="true" />
+
+                <!-- Divider line -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?attr/colorPixelBorderVariant" />
+
+                <TextView
+                    android:id="@+id/tv_published_at"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/press_start_2p"
+                    android:text="[2024.05.22]"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="5sp"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
+            <!-- Article headline: large, left-bordered green bar -->
+            <TextView
+                android:id="@+id/tv_detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_headline_left_border"
+                android:fontFamily="@font/press_start_2p"
+                android:lineSpacingMultiplier="1.4"
+                android:paddingStart="16dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="ARTICLE HEADLINE GOES HERE IN PIXEL CAPS"
+                android:textColor="?attr/colorPixelAccent"
+                android:textSize="10sp"
+                android:textAllCaps="true"
+                tools:text="BREAKING: Neural-Link Protocols Breach Decentralized Ledger" />
+
+            <!-- Hero image: pixel outer frame (1dp bg_outline, 4dp border) -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:background="?attr/colorPixelBorder"
+                android:padding="2dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorSurface"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:id="@+id/iv_detail_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/content_description_news_image"
+                        tools:src="@tools:sample/backgrounds/scenic" />
+
+                    <!-- Caption overlay -->
+                    <TextView
+                        android:id="@+id/tv_image_caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:background="#99131313"
+                        android:fontFamily="@font/press_start_2p"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="FIG. 01: UNAUTHORIZED_ACCESS_DETECTED"
+                        android:textColor="?attr/colorSurface"
+                        android:textSize="5sp"
+                        android:visibility="gone"
+                        tools:ignore="SmallSp"
+                        tools:visibility="visible" />
+
+                </FrameLayout>
+            </FrameLayout>
+
+            <!-- Article body text -->
+            <TextView
+                android:id="@+id/tv_detail_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/press_start_2p"
+                android:lineSpacingMultiplier="1.8"
+                android:text="Article body text goes here. Long-form description from the API."
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="7sp"
+                tools:text="The global decentralized financial network experienced a critical synchronization failure today as emerging neural-link protocols attempted an un-indexed handshake with the primary ledger." />
+
+            <!-- Source / quote callout -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_quote_block"
+                android:layout_marginBottom="24dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/press_start_2p"
+                    android:text="@string/detail_source_label"
+                    android:textColor="?attr/colorPixelHighlight"
+                    android:textSize="6sp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_source_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/press_start_2p"
+                    android:text="SOURCE_NAME"
+                    android:textColor="?attr/colorPixelAccent"
+                    android:textSize="7sp"
+                    tools:text="REUTERS_FEED" />
+
+            </LinearLayout>
+
+            <!-- Action buttons row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp"
+                android:weightSum="2">
+
+                <!-- SHARE button -->
+                <Button
+                    android:id="@+id/btn_share"
+                    style="@style/Widget.BitStreamNews.PixelButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/detail_share"
+                    android:textSize="6sp" />
+
+                <!-- READ FULL ARTICLE button -->
+                <Button
+                    android:id="@+id/btn_read_full"
+                    style="@style/Widget.BitStreamNews.PixelButton.Outlined"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/detail_read_full"
+                    android:textSize="5sp"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

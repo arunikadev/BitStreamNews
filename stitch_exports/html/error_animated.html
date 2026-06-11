@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEWS_GRID_v1.0 - ERROR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .blink { animation: blink 1s step-end infinite; }
+        
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 0, 0, 0.3) 51%,
+                transparent 51%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .scanline-move {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 230, 57, 0.05), transparent);
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+            z-index: 101;
+        }
+
+        /* Enhanced Noise Animation */
+        @keyframes noise {
+            0%, 100% { background-position: 0 0; }
+            10% { background-position: -5% -10%; }
+            20% { background-position: -15% 5%; }
+            30% { background-position: 7% -25%; }
+            40% { background-position: 20% 25%; }
+            50% { background-position: -25% 10%; }
+            60% { background-position: 15% 5%; }
+            70% { background-position: 0% 15%; }
+            80% { background-position: 25% 35%; }
+            90% { background-position: -10% 10%; }
+        }
+        .static-noise {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 99;
+            background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+            animation: noise 0.2s steps(4) infinite;
+        }
+
+        /* Glitch Effect for GAME OVER */
+        @keyframes glitch {
+            0% { transform: translate(0); text-shadow: 0 0 10px currentColor; }
+            2% { transform: translate(-2px, 2px); text-shadow: 2px 0 #00e639, -2px 0 #ff0000; }
+            4% { transform: translate(2px, -2px); text-shadow: -2px 0 #00e639, 2px 0 #ff0000; }
+            6% { transform: translate(0); text-shadow: 0 0 10px currentColor; }
+            100% { transform: translate(0); text-shadow: 0 0 10px currentColor; }
+        }
+        .glitch-text {
+            animation: glitch 3s infinite;
+        }
+
+        .crt-glow {
+            text-shadow: 0 0 10px currentColor;
+        }
+        .pixel-border {
+            box-shadow: 
+                -4px 0 0 0 #000,
+                4px 0 0 0 #000,
+                0 -4px 0 0 #000,
+                0 4px 0 0 #000;
+        }
+        body {
+            background-color: #131313;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#dec800",
+                      "inverse-primary": "#006e16",
+                      "primary": "#ebffe2",
+                      "on-background": "#e5e2e1",
+                      "outline-variant": "#3b4b37",
+                      "outline": "#84967e",
+                      "on-primary-fixed-variant": "#00530e",
+                      "on-tertiary-container": "#c4000d",
+                      "error-container": "#93000a",
+                      "tertiary": "#fff7f6",
+                      "primary-container": "#00ff41",
+                      "error": "#ffb4ab",
+                      "surface-tint": "#00e639",
+                      "on-secondary-fixed": "#201c00",
+                      "on-tertiary-fixed": "#410001",
+                      "on-primary-fixed": "#002203",
+                      "tertiary-fixed-dim": "#ffb4aa",
+                      "on-secondary-fixed-variant": "#504700",
+                      "on-surface-variant": "#b9ccb2",
+                      "on-primary-container": "#007117",
+                      "on-secondary": "#373100",
+                      "secondary": "#ffffff",
+                      "on-primary": "#003907",
+                      "surface-container": "#201f1f",
+                      "on-secondary-container": "#716500",
+                      "surface-bright": "#3a3939",
+                      "surface-dim": "#131313",
+                      "inverse-surface": "#e5e2e1",
+                      "inverse-on-surface": "#313030",
+                      "tertiary-fixed": "#ffdad5",
+                      "background": "#131313",
+                      "surface-variant": "#353534",
+                      "secondary-container": "#fde400",
+                      "surface-container-high": "#2a2a2a",
+                      "on-surface": "#e5e2e1",
+                      "secondary-fixed": "#fde400",
+                      "surface": "#131313",
+                      "on-error": "#690005",
+                      "primary-fixed": "#72ff70",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed-variant": "#930007",
+                      "tertiary-container": "#ffd2cc",
+                      "on-tertiary": "#690003",
+                      "primary-fixed-dim": "#00e639",
+                      "surface-container-low": "#1c1b1b",
+                      "surface-container-highest": "#353534",
+                      "surface-container-lowest": "#0e0e0e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "stack-md": "16px",
+                      "stack-sm": "8px",
+                      "unit": "8px",
+                      "gutter": "16px",
+                      "margin-desktop": "32px",
+                      "stack-lg": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Space Mono"],
+                      "body-lg": ["Space Mono"],
+                      "body-md": ["Space Mono"],
+                      "headline-lg-mobile": ["Space Mono"],
+                      "label-caps": ["Space Mono"],
+                      "headline-md": ["Space Mono"]
+              },
+              "fontSize": {
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-1px", "fontWeight": "700"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "fontWeight": "700"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden h-screen w-screen flex flex-col">
+<!-- CRT Atmosphere Layers -->
+<div class="scanlines"></div>
+<div class="scanline-move"></div>
+<div class="static-noise"></div>
+<!-- Top Navigation -->
+<header class="w-full top-0 sticky border-b-2 border-outline-variant bg-background shadow-[4px_4px_0px_0px_rgba(0,230,57,1)] z-50">
+<div class="flex justify-between items-center px-margin-mobile py-unit w-full max-w-full">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="terminal">terminal</span>
+<span class="font-headline-md text-headline-md text-secondary-fixed-dim blink">NEWS_GRID_v1.0</span>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-primary-fixed-dim hover:bg-surface-variant p-2 transition-all active:translate-x-[2px] active:translate-y-[2px]" data-icon="search">search</button>
+</div>
+</div>
+</header>
+<!-- Main Canvas: Error State Screen -->
+<main class="flex-grow flex flex-col items-center justify-center relative p-margin-mobile">
+<!-- Glitchy Error Block -->
+<div class="max-w-xl w-full flex flex-col items-center gap-stack-lg text-center">
+<!-- Terminal Prefix -->
+<div class="w-full text-left font-label-caps text-label-caps text-primary-fixed-dim mb-stack-sm flex items-center gap-2">
+<span class="bg-primary-fixed-dim text-background px-1">SYSTEM_FAIL</span>
+<span class="opacity-50">[ERROR_CODE: 0x00002A]</span>
+</div>
+<!-- Large "GAME OVER" Text with Glitch Animation -->
+<div class="relative group">
+<h1 class="glitch-text font-headline-lg text-[64px] md:text-[96px] leading-tight text-on-tertiary-container crt-glow tracking-tighter uppercase mb-4" style="font-family: 'Space Mono', monospace;">
+                    GAME OVER
+                </h1>
+<!-- Ghosting effect -->
+<div class="absolute inset-0 text-on-tertiary-container opacity-20 blur-[2px] translate-x-1 translate-y-1 pointer-events-none glitch-text" style="animation-delay: -0.1s;">GAME OVER</div>
+</div>
+<!-- Subtext: "CONNECTION LOST" -->
+<div class="flex flex-col gap-2">
+<h2 class="font-headline-md text-headline-md text-on-surface-variant tracking-widest flex items-center justify-center gap-stack-sm">
+<span class="material-symbols-outlined text-on-tertiary-container" data-icon="wifi_off">wifi_off</span>
+                    CONNECTION LOST
+                </h2>
+<p class="font-body-md text-body-md text-outline italic opacity-70">
+                    Host: news-grid-main.v1 // Status: Timed out during handshake
+                </p>
+</div>
+<!-- Spacer -->
+<div class="h-16 flex items-center justify-center">
+<div class="w-1 bg-primary-fixed-dim h-full blink"></div>
+</div>
+<!-- Retry Button with Blinking Press Start -->
+<button class="group relative px-12 py-6 bg-primary-container border-4 border-outline text-on-primary-container font-headline-lg text-headline-lg uppercase tracking-widest shadow-[8px_8px_0px_0px_rgba(0,113,23,1)] transition-all hover:shadow-[12px_12px_0px_0px_rgba(0,113,23,1)] hover:-translate-x-1 hover:-translate-y-1 active:translate-x-1 active:translate-y-1 active:shadow-[2px_2px_0px_0px_rgba(0,113,23,1)]" onclick="window.location.reload()">
+                RETRY
+                <span class="absolute -top-3 -right-3 bg-secondary-fixed-dim text-on-secondary-fixed text-label-caps px-2 py-1 rotate-12 group-hover:rotate-0 transition-transform blink">PRESS START</span>
+</button>
+<!-- Decorative Terminal Lines -->
+<div class="mt-stack-lg w-full max-w-sm font-label-caps text-label-caps text-left text-outline-variant space-y-1 border-t-2 border-outline-variant pt-stack-md">
+<p>&gt; Initializing local recovery protocols...</p>
+<p>&gt; Pinging gateway 192.168.1.1 [FAIL]</p>
+<p>&gt; Attempting packet reconstruction... [0%]</p>
+<p class="text-on-tertiary-container blink">&gt; FATAL ERROR: STACK_OVERFLOW_GRID_v1</p>
+</div>
+</div>
+<!-- Ambient Side Graphics -->
+<div class="absolute bottom-margin-mobile left-margin-mobile hidden md:block">
+<div class="w-24 h-24 border-2 border-outline-variant opacity-20 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl" data-icon="videogame_asset">videogame_asset</span>
+</div>
+</div>
+<div class="absolute top-32 right-margin-mobile hidden md:block">
+<div class="w-8 h-64 bg-surface-variant opacity-10 flex flex-col items-center justify-between py-4">
+<div class="w-4 h-4 bg-on-tertiary-container blink" style="animation-duration: 0.5s"></div>
+<div class="w-4 h-4 bg-outline"></div>
+<div class="w-4 h-4 bg-outline"></div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<div class="fixed bottom-0 left-0 w-full p-stack-md flex justify-center z-50 pointer-events-none">
+<a class="pointer-events-auto font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors flex items-center gap-unit bg-background/80 px-4 py-2 border border-outline-variant" href="#">
+<span class="material-symbols-outlined text-[14px]" data-icon="arrow_back">arrow_back</span>
+            RETURN TO TERMINAL
+        </a>
+</div>
+<!-- Script for subtle glitch effect on mouse move -->
+<script>
+        const body = document.body;
+        body.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.98) {
+                const glitch = document.createElement('div');
+                glitch.className = 'fixed bg-on-tertiary-container z-[200] opacity-30';
+                glitch.style.width = Math.random() * 100 + 'px';
+                glitch.style.height = '2px';
+                glitch.style.left = e.clientX - 50 + 'px';
+                glitch.style.top = e.clientY + 'px';
+                document.body.appendChild(glitch);
+                setTimeout(() => glitch.remove(), 50);
+            }
+        });
+    </script>
+</body></html>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_home_feed.xml
+    Main news feed screen.
+    Structure:
+      ├── Pixel Toolbar (terminal icon + blinking title + search icon)
+      ├── Breaking news ticker (horizontal MarqueeTextView)
+      ├── Search bar (pixel-bordered EditText with > cursor)
+      ├── Category filter chips (horizontal HorizontalScrollView)
+      └── RecyclerView (news cards list)
+         └── Overlaid empty/error state (GONE by default)
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorSurface"
+    tools:context=".ui.home.HomeFeedFragment">
+
+    <!-- Pixel Toolbar -->
+    <LinearLayout
+        android:id="@+id/toolbar_home"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp"
+        android:background="@drawable/bg_toolbar_pixel">
+
+        <!-- Terminal icon + blinking title -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/press_start_2p"
+            android:text="> NEWS_GRID"
+            android:textColor="?attr/colorPixelHighlight"
+            android:textSize="9sp"
+            android:textAllCaps="true"
+            android:singleLine="true" />
+
+        <!-- Search icon button -->
+        <TextView
+            android:id="@+id/btn_search"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:fontFamily="@font/press_start_2p"
+            android:text="[?]"
+            android:textColor="?attr/colorPixelAccent"
+            android:textSize="8sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/content_description_search"
+            android:background="?attr/selectableItemBackground" />
+
+        <!-- Refresh icon button -->
+        <TextView
+            android:id="@+id/btn_refresh"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:fontFamily="@font/press_start_2p"
+            android:text="[↺]"
+            android:textColor="?attr/colorPixelAccent"
+            android:textSize="8sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/cd_refresh_button"
+            android:background="?attr/selectableItemBackground" />
+
+    </LinearLayout>
+
+    <!-- Breaking News Ticker -->
+    <FrameLayout
+        android:id="@+id/ticker_container"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="?attr/colorTickerBackground">
+
+        <TextView
+            android:id="@+id/tv_ticker"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="marquee"
+            android:fontFamily="@font/press_start_2p"
+            android:gravity="center_vertical"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="@string/home_breaking_ticker"
+            android:textColor="?attr/colorTickerText"
+            android:textSize="6sp"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+    </FrameLayout>
+
+    <!-- Search bar: pixel-bordered input -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_pixel_input">
+
+        <!-- ">" prefix -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:paddingStart="12dp"
+            android:fontFamily="@font/press_start_2p"
+            android:text="&gt;"
+            android:textColor="?attr/colorPixelAccent"
+            android:textSize="10sp" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/press_start_2p"
+            android:hint="@string/home_search_hint"
+            android:textColorHint="?attr/colorOnSurfaceVariant"
+            android:textColor="?attr/colorPixelAccent"
+            android:textSize="7sp"
+            android:paddingStart="32dp"
+            android:paddingEnd="12dp"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:singleLine="true"
+            android:importantForAutofill="no" />
+
+    </FrameLayout>
+
+    <!-- Category filter chips: horizontal scroll -->
+    <HorizontalScrollView
+        android:id="@+id/hsv_categories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:scrollbars="none"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:id="@+id/chip_group_categories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Active chip (WORLD selected by default) -->
+            <TextView
+                android:id="@+id/chip_all"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_category_chip_active"
+                android:fontFamily="@font/press_start_2p"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/category_all"
+                android:textColor="?attr/colorTickerText"
+                android:textSize="6sp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/chip_world"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_category_chip_inactive"
+                android:fontFamily="@font/press_start_2p"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/category_world"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="6sp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/chip_tech"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_category_chip_inactive"
+                android:fontFamily="@font/press_start_2p"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/category_tech"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="6sp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/chip_games"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_category_chip_inactive"
+                android:fontFamily="@font/press_start_2p"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/category_games"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="6sp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/chip_vibe"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_category_chip_inactive"
+                android:fontFamily="@font/press_start_2p"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/category_vibe"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="6sp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/chip_business"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_category_chip_inactive"
+                android:fontFamily="@font/press_start_2p"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/category_business"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="6sp"
+                android:clickable="true"
+                android:focusable="true" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Content area: RecyclerView + empty/loading states stacked -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- News list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_news"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp"
+            android:scrollbars="none"
+            tools:listitem="@layout/item_news_card"
+            tools:itemCount="5" />
+
+        <!-- Loading indicator -->
+        <LinearLayout
+            android:id="@+id/layout_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp"
+            android:visibility="gone"
+            tools:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/press_start_2p"
+                android:text="@string/home_loading"
+                android:textColor="?attr/colorPixelAccent"
+                android:textSize="7sp"
+                android:textAllCaps="true" />
+
+            <ProgressBar
+                android:id="@+id/progress_loading"
+                style="@style/Widget.BitStreamNews.ProgressBar"
+                android:layout_width="200dp"
+                android:layout_height="16dp"
+                android:indeterminate="true" />
+
+        </LinearLayout>
+
+        <!-- Error / empty state — include the reusable layout -->
+        <include
+            android:id="@+id/layout_error"
+            layout="@layout/layout_error_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</LinearLayout>

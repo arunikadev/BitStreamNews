@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ================================================================
+         DARK THEME — Classic CRT / Phosphor Green (from Stitch design)
+         background: #131313, neon green accent, golden yellow highlight
+         ================================================================ -->
+
+    <!-- Backgrounds -->
+    <color name="dark_background">#131313</color>
+    <color name="dark_surface">#131313</color>
+    <color name="dark_surface_dim">#131313</color>
+    <color name="dark_surface_container_lowest">#0E0E0E</color>
+    <color name="dark_surface_container_low">#1C1B1B</color>
+    <color name="dark_surface_container">#201F1F</color>
+    <color name="dark_surface_container_high">#2A2A2A</color>
+    <color name="dark_surface_container_highest">#353534</color>
+    <color name="dark_surface_variant">#353534</color>
+    <color name="dark_surface_bright">#3A3939</color>
+
+    <!-- Primary — Neon Green (phosphor CRT glow) -->
+    <color name="dark_primary">#EBFFE2</color>
+    <color name="dark_primary_container">#00FF41</color>
+    <color name="dark_on_primary">#003907</color>
+    <color name="dark_on_primary_container">#007117</color>
+    <color name="dark_primary_fixed">#72FF70</color>
+    <color name="dark_primary_fixed_dim">#00E639</color>
+    <color name="dark_on_primary_fixed">#002203</color>
+    <color name="dark_on_primary_fixed_variant">#00530E</color>
+    <color name="dark_inverse_primary">#006E16</color>
+    <color name="dark_surface_tint">#00E639</color>
+
+    <!-- Secondary — Pixel Yellow / Amber -->
+    <color name="dark_secondary">#FFFFFF</color>
+    <color name="dark_secondary_container">#FDE400</color>
+    <color name="dark_secondary_fixed">#FDE400</color>
+    <color name="dark_secondary_fixed_dim">#DEC800</color>
+    <color name="dark_on_secondary">#373100</color>
+    <color name="dark_on_secondary_container">#716500</color>
+    <color name="dark_on_secondary_fixed">#201C00</color>
+    <color name="dark_on_secondary_fixed_variant">#504700</color>
+
+    <!-- Tertiary — Pixel Red (error/alert accent) -->
+    <color name="dark_tertiary">#FFF7F6</color>
+    <color name="dark_tertiary_container">#FFD2CC</color>
+    <color name="dark_tertiary_fixed">#FFDAD5</color>
+    <color name="dark_tertiary_fixed_dim">#FFB4AA</color>
+    <color name="dark_on_tertiary">#690003</color>
+    <color name="dark_on_tertiary_container">#C4000D</color>
+    <color name="dark_on_tertiary_fixed">#410001</color>
+    <color name="dark_on_tertiary_fixed_variant">#930007</color>
+
+    <!-- Error -->
+    <color name="dark_error">#FFB4AB</color>
+    <color name="dark_error_container">#93000A</color>
+    <color name="dark_on_error">#690005</color>
+    <color name="dark_on_error_container">#FFDAD6</color>
+
+    <!-- On-Surface / Text -->
+    <color name="dark_on_background">#E5E2E1</color>
+    <color name="dark_on_surface">#E5E2E1</color>
+    <color name="dark_on_surface_variant">#B9CCB2</color>
+    <color name="dark_inverse_surface">#E5E2E1</color>
+    <color name="dark_inverse_on_surface">#313030</color>
+
+    <!-- Outline / Border -->
+    <color name="dark_outline">#84967E</color>
+    <color name="dark_outline_variant">#3B4B37</color>
+
+    <!-- ================================================================
+         LIGHT THEME — Parchment / Amber CRT (warm retro terminal)
+         background: #F5EDD6 (aged paper), text: #1A0A00 (dark ink brown)
+         ================================================================ -->
+
+    <!-- Backgrounds -->
+    <color name="light_background">#F5EDD6</color>
+    <color name="light_surface">#F5EDD6</color>
+    <color name="light_surface_dim">#E8DCC2</color>
+    <color name="light_surface_container_lowest">#FFFBF0</color>
+    <color name="light_surface_container_low">#F0E6CC</color>
+    <color name="light_surface_container">#E8DABB</color>
+    <color name="light_surface_container_high">#DDD0AB</color>
+    <color name="light_surface_container_highest">#CFC39A</color>
+    <color name="light_surface_variant">#DDD0AB</color>
+    <color name="light_surface_bright">#FBF5E0</color>
+
+    <!-- Primary — Amber / Dark Amber accent -->
+    <color name="light_primary">#7A4800</color>
+    <color name="light_primary_container">#FFDFAB</color>
+    <color name="light_on_primary">#FFFFFF</color>
+    <color name="light_on_primary_container">#271900</color>
+    <color name="light_primary_fixed">#FFDFAB</color>
+    <color name="light_primary_fixed_dim">#FFBA41</color>
+    <color name="light_on_primary_fixed">#271900</color>
+    <color name="light_on_primary_fixed_variant">#5C3500</color>
+    <color name="light_inverse_primary">#FFBA41</color>
+    <color name="light_surface_tint">#CC6600</color>
+
+    <!-- Secondary — Warm brown -->
+    <color name="light_secondary">#6B5C3E</color>
+    <color name="light_secondary_container">#F5DDBB</color>
+    <color name="light_secondary_fixed">#F5DDBB</color>
+    <color name="light_secondary_fixed_dim">#D8C2A0</color>
+    <color name="light_on_secondary">#FFFFFF</color>
+    <color name="light_on_secondary_container">#241A07</color>
+    <color name="light_on_secondary_fixed">#241A07</color>
+    <color name="light_on_secondary_fixed_variant">#514433</color>
+
+    <!-- Tertiary — Brick red / pixel red -->
+    <color name="light_tertiary">#7C2D12</color>
+    <color name="light_tertiary_container">#FFDAD1</color>
+    <color name="light_tertiary_fixed">#FFDAD1</color>
+    <color name="light_tertiary_fixed_dim">#FFB4A3</color>
+    <color name="light_on_tertiary">#FFFFFF</color>
+    <color name="light_on_tertiary_container">#330D04</color>
+    <color name="light_on_tertiary_fixed">#330D04</color>
+    <color name="light_on_tertiary_fixed_variant">#5E1807</color>
+
+    <!-- Error -->
+    <color name="light_error">#BA1A1A</color>
+    <color name="light_error_container">#FFDAD6</color>
+    <color name="light_on_error">#FFFFFF</color>
+    <color name="light_on_error_container">#410002</color>
+
+    <!-- On-Surface / Text -->
+    <color name="light_on_background">#1A0A00</color>
+    <color name="light_on_surface">#1A0A00</color>
+    <color name="light_on_surface_variant">#51442F</color>
+    <color name="light_inverse_surface">#362F23</color>
+    <color name="light_inverse_on_surface">#F9EFE2</color>
+
+    <!-- Outline / Border -->
+    <color name="light_outline">#84724F</color>
+    <color name="light_outline_variant">#D4C4A6</color>
+
+    <!-- ================================================================
+         SHARED / SEMANTIC COLORS (used across both themes explicitly)
+         ================================================================ -->
+
+    <!-- Neon green (CRT phosphor) -->
+    <color name="neon_green">#00FF41</color>
+    <color name="neon_green_dim">#00E639</color>
+    <color name="neon_green_bright">#72FF70</color>
+
+    <!-- Pixel yellow / golden -->
+    <color name="pixel_yellow">#FFE600</color>
+    <color name="pixel_yellow_dim">#DEC800</color>
+    <color name="pixel_amber">#CC6600</color>
+
+    <!-- Pixel red (error / GAME OVER) -->
+    <color name="pixel_red">#FF2020</color>
+    <color name="pixel_red_dark">#C4000D</color>
+
+    <!-- Neutrals -->
+    <color name="crt_black">#131313</color>
+    <color name="deep_black">#0E0E0E</color>
+    <color name="pure_white">#FFFFFF</color>
+    <color name="parchment">#F5EDD6</color>
+    <color name="dark_ink">#1A0A00</color>
+
+    <!-- Transparent -->
+    <color name="transparent">#00000000</color>
+
+</resources>

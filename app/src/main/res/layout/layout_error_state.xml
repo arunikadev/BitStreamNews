@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    layout_error_state.xml
+    Reusable GAME OVER / error screen.
+    Included into fragment_home_feed.xml via <include>.
+    Also usable standalone in other screens.
+
+    Matches Stitch Error State design:
+      ├── [SYSTEM_FAIL] badge + error code
+      ├── "GAME OVER" — large pixel red text
+      ├── WiFi-off icon + CONNECTION LOST label
+      ├── Blinking cursor divider
+      ├── RETRY button (large, pixel, green with shadow)
+      └── Terminal debug lines
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="?attr/colorSurface">
+
+    <!-- SYSTEM_FAIL badge + error code -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPixelAccent"
+            android:fontFamily="@font/press_start_2p"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="@string/error_system_fail"
+            android:textColor="?attr/colorSurface"
+            android:textSize="6sp"
+            android:textAllCaps="true"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:alpha="0.5"
+            android:fontFamily="@font/press_start_2p"
+            android:text="@string/error_code"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="5sp"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
+    <!-- "GAME OVER" — large pixel red -->
+    <TextView
+        android:id="@+id/tv_game_over"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/press_start_2p"
+        android:gravity="center"
+        android:text="@string/error_game_over"
+        android:textColor="?attr/colorPixelError"
+        android:textSize="28sp"
+        android:textAllCaps="true"
+        android:letterSpacing="-0.04" />
+
+    <!-- CONNECTION LOST row (icon + label) -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_error_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/press_start_2p"
+            android:gravity="center"
+            android:text="@string/error_connection_lost"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="9sp"
+            android:textAllCaps="true"
+            android:letterSpacing="0.1" />
+
+        <TextView
+            android:id="@+id/tv_error_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.7"
+            android:fontFamily="@font/press_start_2p"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.4"
+            android:text="@string/error_connection_detail"
+            android:textColor="?attr/colorPixelBorder"
+            android:textSize="5sp"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
+    <!-- Blinking cursor divider -->
+    <View
+        android:id="@+id/view_cursor_blink"
+        android:layout_width="2dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/colorPixelAccent" />
+
+    <!-- RETRY button: large, green bg, hard pixel shadow -->
+    <Button
+        android:id="@+id/btn_retry"
+        style="@style/Widget.BitStreamNews.PixelButton.Retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/error_retry"
+        android:textSize="12sp" />
+
+    <!-- Terminal debug lines -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_terminal_window"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/press_start_2p"
+            android:text="@string/error_terminal_line1"
+            android:textColor="?attr/colorPixelBorder"
+            android:textSize="5sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/press_start_2p"
+            android:text="@string/error_terminal_line2"
+            android:textColor="?attr/colorPixelBorder"
+            android:textSize="5sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/press_start_2p"
+            android:text="@string/error_terminal_line3"
+            android:textColor="?attr/colorPixelBorder"
+            android:textSize="5sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tv_fatal_error_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/press_start_2p"
+            android:text="@string/error_terminal_line4"
+            android:textColor="?attr/colorPixelError"
+            android:textSize="5sp"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
+</LinearLayout>

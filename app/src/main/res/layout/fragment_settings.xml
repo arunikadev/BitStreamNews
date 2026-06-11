@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_settings.xml
+    BIOS-style settings screen.
+    Matches Stitch Settings design: retro game BIOS/CMOS setup utility look.
+    Structure (ScrollView):
+      ├── Pixel Toolbar
+      ├── Identity section (CMOS header card)
+      ├── VIDEO_OUTPUT section:
+      │    ├── DARK_MODE toggle row
+      │    └── (more options expandable)
+      ├── COMMS_LINK section:
+      │    ├── NOTIFICATIONS toggle
+      │    └── Warning notice block
+      ├── SUB_SYSTEMS section:
+      │    └── CACHE_STORAGE row with PURGE button
+      └── Action buttons: COMMIT_CHANGES | DISCARD_EXIT
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorSurface"
+    tools:context=".ui.settings.SettingsFragment">
+
+    <!-- Pixel Toolbar -->
+    <LinearLayout
+        android:id="@+id/toolbar_settings"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@drawable/bg_toolbar_pixel">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/press_start_2p"
+            android:text="> BIOS_SETTINGS"
+            android:textColor="?attr/colorPixelHighlight"
+            android:textSize="8sp"
+            android:textAllCaps="true"
+            android:singleLine="true" />
+
+    </LinearLayout>
+
+    <!-- Scrollable settings content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Identity / Header card: amber drop shadow -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_settings_header_card"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/press_start_2p"
+                    android:text="⚙ SYSTEM SETUP"
+                    android:textColor="?attr/colorPixelHighlight"
+                    android:textSize="10sp"
+                    android:textAllCaps="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/press_start_2p"
+                    android:lineSpacingMultiplier="1.6"
+                    android:text="@string/settings_subtitle"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="5sp"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
+            <!-- VIDEO_OUTPUT section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_settings_section">
+
+                <!-- Section header bar (amber bg) -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="12dp"
+                    android:background="?attr/colorPixelHighlight"
+                    android:fontFamily="@font/press_start_2p"
+                    android:text="@string/settings_section_video"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="6sp"
+                    android:textAllCaps="true"
+                    tools:ignore="SmallSp" />
+
+                <!-- DARK_MODE toggle row -->
+                <LinearLayout
+                    android:id="@+id/row_dark_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:fontFamily="@font/press_start_2p"
+                            android:text="@string/settings_dark_mode_title"
+                            android:textColor="?attr/colorPixelAccent"
+                            android:textSize="8sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/press_start_2p"
+                            android:text="@string/settings_dark_mode_subtitle"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="5sp"
+                            tools:ignore="SmallSp" />
+
+                    </LinearLayout>
+
+                    <!-- Pixel ON/OFF toggle: custom view using Switch -->
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_dark_mode"
+                        style="@style/Widget.BitStreamNews.Switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/cd_theme_toggle" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- COMMS_LINK section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_settings_section">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="12dp"
+                    android:background="?attr/colorPixelHighlight"
+                    android:fontFamily="@font/press_start_2p"
+                    android:text="@string/settings_section_comms"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="6sp"
+                    android:textAllCaps="true"
+                    tools:ignore="SmallSp" />
+
+                <!-- Notifications toggle row -->
+                <LinearLayout
+                    android:id="@+id/row_notifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:fontFamily="@font/press_start_2p"
+                            android:text="@string/settings_notifications_title"
+                            android:textColor="?attr/colorPixelAccent"
+                            android:textSize="8sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/press_start_2p"
+                            android:text="@string/settings_notifications_subtitle"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="5sp"
+                            tools:ignore="SmallSp" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_notifications"
+                        style="@style/Widget.BitStreamNews.Switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/settings_notifications_title" />
+
+                </LinearLayout>
+
+                <!-- Warning notice block: amber left border -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_warning_block"
+                    android:fontFamily="@font/press_start_2p"
+                    android:lineSpacingMultiplier="1.6"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/settings_notifications_warning"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="5sp"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
+            <!-- SUB_SYSTEMS section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_settings_section">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="12dp"
+                    android:background="?attr/colorPixelHighlight"
+                    android:fontFamily="@font/press_start_2p"
+                    android:text="@string/settings_section_subsystems"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="6sp"
+                    android:textAllCaps="true"
+                    tools:ignore="SmallSp" />
+
+                <!-- CACHE_STORAGE row -->
+                <LinearLayout
+                    android:id="@+id/row_cache"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:fontFamily="@font/press_start_2p"
+                            android:text="@string/settings_cache_title"
+                            android:textColor="?attr/colorPixelAccent"
+                            android:textSize="8sp" />
+
+                        <TextView
+                            android:id="@+id/tv_cache_size"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/press_start_2p"
+                            android:text="USED: 0MB / 128MB"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="5sp"
+                            tools:ignore="SmallSp" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_clear_cache"
+                        style="@style/Widget.BitStreamNews.PixelButton.Outlined"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="@string/settings_clear_cache"
+                        android:textSize="5sp"
+                        android:textColor="?attr/colorError"
+                        android:strokeColor="?attr/colorError"
+                        tools:ignore="SmallSp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Color bars decorative row (from Stitch) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp"
+                android:weightSum="4">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/colorPixelAccent" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/colorPixelHighlight" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/colorPixelError" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/colorPixelBorder" />
+
+            </LinearLayout>
+
+            <!-- Action buttons -->
+            <Button
+                android:id="@+id/btn_save_settings"
+                style="@style/Widget.BitStreamNews.PixelButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/settings_save"
+                android:textSize="7sp" />
+
+            <Button
+                android:id="@+id/btn_discard_settings"
+                style="@style/Widget.BitStreamNews.PixelButton.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/settings_discard"
+                android:textSize="7sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_news_card.xml
+    Single news card for RecyclerView.
+    Pixel border frame with 4dp hard shadow offset.
+    Structure:
+      ├── Header bar: category label [left] + timestamp [right] — accent bg
+      ├── Body row:
+      │    ├── Thumbnail (ImageView, 100x100dp, pixel-bordered)
+      │    └── Right content:
+      │         ├── Headline text (pixel bold, accent color)
+      │         ├── Description (2 lines, muted)
+      │         └── Source badge + READ_MORE link
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/bg_news_card"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <!-- Card header bar: accent background, category + timestamp -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:background="@drawable/bg_card_header">
+
+        <TextView
+            android:id="@+id/tv_card_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/press_start_2p"
+            android:text="TECH"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="5sp"
+            android:textAllCaps="true"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tv_card_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/press_start_2p"
+            android:text="[14:20]"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="5sp"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
+    <!-- Body: thumbnail + text column -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <!-- Thumbnail with pixel border -->
+        <FrameLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_thumbnail_frame">
+
+            <ImageView
+                android:id="@+id/iv_card_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/content_description_news_image"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <!-- No-image placeholder text -->
+            <TextView
+                android:id="@+id/tv_no_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="@font/press_start_2p"
+                android:text="[NO_IMG]"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="5sp"
+                android:background="?attr/colorSurfaceContainerHigh"
+                android:visibility="gone"
+                tools:ignore="SmallSp" />
+
+        </FrameLayout>
+
+        <!-- Text column -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- Article headline -->
+            <TextView
+                android:id="@+id/tv_card_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/press_start_2p"
+                android:lineSpacingMultiplier="1.4"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:text="ARTICLE HEADLINE GOES HERE IN PIXEL CAPS"
+                android:textColor="?attr/colorPixelAccent"
+                android:textSize="8sp"
+                android:textAllCaps="true"
+                tools:text="Cyber-Aesthetics Take Over Mainstream Design Pipelines" />
+
+            <!-- Description (2 lines max) -->
+            <TextView
+                android:id="@+id/tv_card_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/press_start_2p"
+                android:lineSpacingMultiplier="1.4"
+                android:maxLines="2"
+                android:text="Article description goes here with max two lines of content…"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="6sp"
+                tools:ignore="SmallSp"
+                tools:text="In a shocking turn of events, major design firms are pivoting back to 8-bit visual languages." />
+
+            <!-- Source badge + READ_MORE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_card_source"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/colorCardBackground"
+                    android:fontFamily="@font/press_start_2p"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="TECH_FEED"
+                    android:textColor="?attr/colorPixelAccent"
+                    android:textSize="5sp"
+                    android:textAllCaps="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:ignore="SmallSp" />
+
+                <TextView
+                    android:id="@+id/tv_read_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/press_start_2p"
+                    android:text="@string/home_read_more"
+                    android:textColor="?attr/colorPixelHighlight"
+                    android:textSize="5sp"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bottom_nav_menu.xml
+    CRITICAL: Item IDs MUST match the fragment destination IDs in nav_graph.xml
+    for NavigationUI.setupWithNavController() to auto-handle tab switching.
+
+    nav_graph.xml destination IDs:
+      @+id/homeFeedFragment
+      @+id/categoryFragment
+      @+id/settingsFragment
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFeedFragment"
+        android:title="@string/nav_feed"
+        android:icon="@drawable/ic_nav_feed" />
+
+    <item
+        android:id="@+id/categoryFragment"
+        android:title="@string/nav_browse"
+        android:icon="@drawable/ic_nav_browse" />
+
+    <item
+        android:id="@+id/settingsFragment"
+        android:title="@string/nav_settings"
+        android:icon="@drawable/ic_nav_settings" />
+
+</menu>

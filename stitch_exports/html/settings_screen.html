@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BIOS_SETTINGS_v1.0</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .blink { animation: blink 1s step-end infinite; }
+        
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.1) 50%
+            ), linear-gradient(
+                90deg,
+                rgba(255, 0, 0, 0.03),
+                rgba(0, 255, 0, 0.01),
+                rgba(0, 0, 255, 0.03)
+            );
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .crt-glow {
+            text-shadow: 0 0 5px rgba(0, 230, 57, 0.5);
+        }
+
+        .pixel-border {
+            box-shadow: 
+                0 -4px 0 -2px #84967e,
+                0 4px 0 -2px #84967e,
+                -4px 0 0 -2px #84967e,
+                4px 0 0 -2px #84967e;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: #353534;
+            height: 16px;
+            border: 2px solid #84967e;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #00e639;
+            height: 24px;
+            width: 12px;
+            margin-top: -6px;
+            border: 2px solid #003907;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#dec800",
+                      "inverse-primary": "#006e16",
+                      "primary": "#ebffe2",
+                      "on-background": "#e5e2e1",
+                      "outline-variant": "#3b4b37",
+                      "outline": "#84967e",
+                      "on-primary-fixed-variant": "#00530e",
+                      "on-tertiary-container": "#c4000d",
+                      "error-container": "#93000a",
+                      "tertiary": "#fff7f6",
+                      "primary-container": "#00ff41",
+                      "error": "#ffb4ab",
+                      "surface-tint": "#00e639",
+                      "on-secondary-fixed": "#201c00",
+                      "on-tertiary-fixed": "#410001",
+                      "on-primary-fixed": "#002203",
+                      "tertiary-fixed-dim": "#ffb4aa",
+                      "on-secondary-fixed-variant": "#504700",
+                      "on-surface-variant": "#b9ccb2",
+                      "on-primary-container": "#007117",
+                      "on-secondary": "#373100",
+                      "secondary": "#ffffff",
+                      "on-primary": "#003907",
+                      "surface-container": "#201f1f",
+                      "on-secondary-container": "#716500",
+                      "surface-bright": "#3a3939",
+                      "surface-dim": "#131313",
+                      "inverse-surface": "#e5e2e1",
+                      "inverse-on-surface": "#313030",
+                      "tertiary-fixed": "#ffdad5",
+                      "background": "#131313",
+                      "surface-variant": "#353534",
+                      "secondary-container": "#fde400",
+                      "surface-container-high": "#2a2a2a",
+                      "on-surface": "#e5e2e1",
+                      "secondary-fixed": "#fde400",
+                      "surface": "#131313",
+                      "on-error": "#690005",
+                      "primary-fixed": "#72ff70",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed-variant": "#930007",
+                      "tertiary-container": "#ffd2cc",
+                      "on-tertiary": "#690003",
+                      "primary-fixed-dim": "#00e639",
+                      "surface-container-low": "#1c1b1b",
+                      "surface-container-highest": "#353534",
+                      "surface-container-lowest": "#0e0e0e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0px",
+                      "lg": "0px",
+                      "xl": "0px",
+                      "full": "0px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "stack-md": "16px",
+                      "stack-sm": "8px",
+                      "unit": "8px",
+                      "gutter": "16px",
+                      "margin-desktop": "32px",
+                      "stack-lg": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Space Mono"],
+                      "body-lg": ["Space Mono"],
+                      "body-md": ["Space Mono"],
+                      "headline-lg-mobile": ["Space Mono"],
+                      "label-caps": ["Space Mono"],
+                      "headline-md": ["Space Mono"]
+              },
+              "fontSize": {
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-1px", "fontWeight": "700"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "fontWeight": "700"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<div class="scanline-overlay"></div>
+<!-- Top AppBar -->
+<header class="bg-background dark:bg-background text-primary-fixed-dim dark:text-primary-fixed-dim w-full top-0 sticky border-b-2 border-outline-variant shadow-[4px_4px_0px_0px_rgba(0,230,57,1)] z-50">
+<div class="flex justify-between items-center px-margin-mobile py-unit w-full max-w-full">
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="terminal">terminal</span>
+<h1 class="font-headline-md text-headline-md uppercase tracking-tighter">
+<span class="font-headline-md text-headline-md text-secondary-fixed-dim dark:text-secondary-fixed-dim blink">NEWS_GRID_v1.0</span>
+</h1>
+</div>
+<button class="material-symbols-outlined hover:bg-surface-variant hover:text-primary-fixed-dim p-unit active:translate-x-[2px] active:translate-y-[2px] transition-all" data-icon="search">search</button>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-margin-mobile py-stack-lg space-y-stack-lg mb-24">
+<!-- Header / Identity -->
+<section class="border-2 border-outline p-stack-md bg-surface-container-low shadow-[4px_4px_0px_0px_rgba(222,200,0,1)]">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-secondary-fixed-dim mb-unit flex items-center gap-unit uppercase">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                System Setup
+            </h2>
+<p class="text-on-surface-variant font-body-md opacity-80 uppercase leading-tight">
+                CMOS SETUP UTILITY - COPYRIGHT (C) 1984-2024<br/>
+                v1.0.4-LATEST_STABLE // KERNEL: 8-BIT-CORE
+            </p>
+</section>
+<!-- UI & Video Settings -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Appearance Group -->
+<section class="border-2 border-outline p-stack-md bg-surface-container-low flex flex-col gap-stack-md">
+<div class="bg-secondary-fixed-dim text-background px-unit py-1 font-bold uppercase tracking-widest text-label-caps">
+                    VIDEO_OUTPUT
+                </div>
+<!-- Toggle: Dark Mode -->
+<div class="flex items-center justify-between group hover:bg-surface-variant p-unit cursor-pointer transition-colors" onclick="toggleOption('dark-mode')">
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-primary-fixed-dim">DARK_MODE</span>
+<span class="text-label-caps text-on-surface-variant">ENABLE PHOSPHOR_BLACK</span>
+</div>
+<div class="w-16 h-8 border-2 border-outline bg-surface-container-highest flex items-center p-1" id="dark-mode-toggle">
+<div class="w-1/2 h-full bg-primary-fixed-dim border-2 border-on-primary-container"></div>
+</div>
+</div>
+<!-- Slider: Scanline -->
+<div class="flex flex-col gap-unit p-unit">
+<div class="flex justify-between items-end">
+<span class="font-headline-md text-headline-md text-primary-fixed-dim">SCAN_INTENSITY</span>
+<span class="font-headline-md text-headline-md text-secondary-fixed-dim" id="scanline-val">85%</span>
+</div>
+<input class="w-full" max="100" min="0" oninput="document.getElementById('scanline-val').innerText = this.value + '%'" type="range" value="85"/>
+</div>
+</section>
+<!-- Notifications Group -->
+<section class="border-2 border-outline p-stack-md bg-surface-container-low flex flex-col gap-stack-md">
+<div class="bg-secondary-fixed-dim text-background px-unit py-1 font-bold uppercase tracking-widest text-label-caps">
+                    COMMS_LINK
+                </div>
+<!-- Toggle: Notifications -->
+<div class="flex items-center justify-between group hover:bg-surface-variant p-unit cursor-pointer transition-colors" onclick="toggleOption('notif')">
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-primary-fixed-dim">NOTIFICATIONS</span>
+<span class="text-label-caps text-on-surface-variant">INTERRUPT_MODE_ON</span>
+</div>
+<div class="w-16 h-8 border-2 border-outline bg-surface-container-highest flex items-center p-1 justify-end" id="notif-toggle">
+<div class="w-1/2 h-full bg-primary-fixed-dim border-2 border-on-primary-container"></div>
+</div>
+</div>
+<div class="bg-outline-variant p-unit text-on-surface-variant text-label-caps leading-relaxed border-l-4 border-secondary-fixed-dim">
+                    [NOTICE]: ENABLING NOTIFICATIONS MAY CAUSE SUDDEN POP-UPS ON MAIN TERMINAL. PROCEED WITH CAUTION.
+                </div>
+</section>
+</div>
+<!-- Terminal Layout (Android Style) -->
+<section class="border-2 border-outline bg-surface-container-low overflow-hidden">
+<div class="bg-outline-variant p-stack-sm flex items-center gap-unit border-b-2 border-outline">
+<span class="material-symbols-outlined text-secondary-fixed-dim" data-icon="data_usage">data_usage</span>
+<span class="font-label-caps text-label-caps">SUB_SYSTEMS</span>
+</div>
+<div class="divide-y-2 divide-outline-variant">
+<div class="p-stack-md flex items-center gap-stack-md hover:bg-surface-variant cursor-pointer group active:translate-x-1 transition-all">
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl" data-icon="account_circle">account_circle</span>
+<div class="flex-1">
+<div class="font-headline-md text-headline-md group-hover:text-secondary-fixed-dim">USER_PROFILE</div>
+<div class="text-label-caps text-on-surface-variant">OPERATOR: ADMIN_01</div>
+</div>
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="p-stack-md flex items-center gap-stack-md hover:bg-surface-variant cursor-pointer group active:translate-x-1 transition-all">
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl" data-icon="storage">storage</span>
+<div class="flex-1">
+<div class="font-headline-md text-headline-md group-hover:text-secondary-fixed-dim">CACHE_STORAGE</div>
+<div class="text-label-caps text-on-surface-variant">USED: 42MB / 128MB</div>
+</div>
+<div class="px-unit py-1 border-2 border-error text-error text-label-caps">PURGE</div>
+</div>
+<div class="p-stack-md flex items-center gap-stack-md hover:bg-surface-variant cursor-pointer group active:translate-x-1 transition-all">
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl" data-icon="security">security</span>
+<div class="flex-1">
+<div class="font-headline-md text-headline-md group-hover:text-secondary-fixed-dim">CRYPT_KEYS</div>
+<div class="text-label-caps text-on-surface-variant">LEVEL: 256-BIT_XOR</div>
+</div>
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+</div>
+</div>
+</section>
+<!-- Save/Actions -->
+<div class="flex flex-col md:flex-row gap-gutter">
+<button class="flex-1 py-stack-md border-2 border-outline bg-primary-container text-on-primary-container font-headline-md text-headline-md uppercase hover:bg-primary-fixed shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] transition-all">
+                COMMIT_CHANGES [F10]
+            </button>
+<button class="flex-1 py-stack-md border-2 border-outline bg-transparent text-primary-fixed-dim font-headline-md text-headline-md uppercase hover:bg-surface-variant active:translate-x-[2px] active:translate-y-[2px] transition-all">
+                DISCARD_EXIT [ESC]
+            </button>
+</div>
+<!-- System Stats Decor -->
+<div class="grid grid-cols-4 gap-unit">
+<div class="h-2 bg-primary-fixed-dim"></div>
+<div class="h-2 bg-secondary-fixed-dim"></div>
+<div class="h-2 bg-error"></div>
+<div class="h-2 bg-outline"></div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center bg-background border-t-4 border-double border-outline h-[64px] z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-unit opacity-70 hover:bg-surface-variant active:translate-y-1 transition-all duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps">FEED</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-unit opacity-70 hover:bg-surface-variant active:translate-y-1 transition-all duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-caps text-label-caps">BROWSE</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container p-unit border-2 border-outline active:translate-y-1 transition-all duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">SET</span>
+</a>
+</nav>
+<script>
+        function toggleOption(id) {
+            const toggle = document.getElementById(id + '-toggle');
+            const isActive = toggle.classList.contains('justify-end');
+            
+            if (isActive) {
+                toggle.classList.remove('justify-end');
+                toggle.classList.add('justify-start');
+                toggle.children[0].classList.replace('bg-primary-fixed-dim', 'bg-surface-variant');
+            } else {
+                toggle.classList.remove('justify-start');
+                toggle.classList.add('justify-end');
+                toggle.children[0].classList.replace('bg-surface-variant', 'bg-primary-fixed-dim');
+            }
+
+            // Dark Mode Specific Effect
+            if (id === 'dark-mode') {
+                document.documentElement.classList.toggle('dark');
+            }
+        }
+        
+        // Initial setup for the toggles based on the HTML structure
+        document.addEventListener('DOMContentLoaded', () => {
+            // Notifications starts "ON" in the HTML structure (justify-end)
+            // Dark Mode starts "OFF" in the HTML structure (justify-start) - Fixing visual consistency:
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            darkModeToggle.classList.add('justify-end'); // Defaulting to ON as per class "dark" on HTML
+        });
+    </script>
+</body></html>

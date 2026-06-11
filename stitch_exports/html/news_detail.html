@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 0, 0, 0.1) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .crt-flicker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(18, 16, 16, 0.1);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 9998;
+            animation: flicker 0.15s infinite;
+        }
+        @keyframes flicker {
+            0% { opacity: 0.1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 0.1; }
+        }
+        .blink {
+            animation: blink 1s step-end infinite;
+        }
+        .pixel-border {
+            box-shadow: 
+                0 -4px 0 -2px #131313, 0 -4px 0 0px #84967e,
+                0 4px 0 -2px #131313, 0 4px 0 0px #84967e,
+                -4px 0 0 -2px #131313, -4px 0 0 0px #84967e,
+                4px 0 0 -2px #131313, 4px 0 0 0px #84967e;
+        }
+        .terminal-cursor::after {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #00e639;
+            margin-left: 4px;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #3b4b37; border: 2px solid #131313; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#dec800",
+                        "inverse-primary": "#006e16",
+                        "primary": "#ebffe2",
+                        "on-background": "#e5e2e1",
+                        "outline-variant": "#3b4b37",
+                        "outline": "#84967e",
+                        "on-primary-fixed-variant": "#00530e",
+                        "on-tertiary-container": "#c4000d",
+                        "error-container": "#93000a",
+                        "tertiary": "#fff7f6",
+                        "primary-container": "#00ff41",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#00e639",
+                        "on-secondary-fixed": "#201c00",
+                        "on-tertiary-fixed": "#410001",
+                        "on-primary-fixed": "#002203",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "on-secondary-fixed-variant": "#504700",
+                        "on-surface-variant": "#b9ccb2",
+                        "on-primary-container": "#007117",
+                        "on-secondary": "#373100",
+                        "secondary": "#ffffff",
+                        "on-primary": "#003907",
+                        "surface-container": "#201f1f",
+                        "on-secondary-container": "#716500",
+                        "surface-bright": "#3a3939",
+                        "surface-dim": "#131313",
+                        "inverse-surface": "#e5e2e1",
+                        "inverse-on-surface": "#313030",
+                        "tertiary-fixed": "#ffdad5",
+                        "background": "#131313",
+                        "surface-variant": "#353534",
+                        "secondary-container": "#fde400",
+                        "surface-container-high": "#2a2a2a",
+                        "on-surface": "#e5e2e1",
+                        "secondary-fixed": "#fde400",
+                        "surface": "#131313",
+                        "on-error": "#690005",
+                        "primary-fixed": "#72ff70",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#930007",
+                        "tertiary-container": "#ffd2cc",
+                        "on-tertiary": "#690003",
+                        "primary-fixed-dim": "#00e639",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-highest": "#353534",
+                        "surface-container-lowest": "#0e0e0e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "unit": "8px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Space Mono"],
+                        "body-lg": ["Space Mono"],
+                        "body-md": ["Space Mono"],
+                        "headline-lg-mobile": ["Space Mono"],
+                        "label-caps": ["Space Mono"],
+                        "headline-md": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-1px", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<div class="scanline-overlay"></div>
+<div class="crt-flicker"></div>
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-background dark:bg-background z-40 border-b-2 border-outline-variant shadow-[4px_4px_0px_0px_rgba(0,230,57,1)] flex justify-between items-center px-margin-mobile py-unit w-full max-w-full">
+<button class="flex items-center gap-2 px-unit py-1 border-2 border-outline hover:bg-surface-variant text-primary-fixed-dim transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,230,57,1)]" onclick="window.history.back()">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+<span class="font-label-caps text-label-caps">BACK</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed-dim">terminal</span>
+<h1 class="font-headline-md text-headline-md uppercase tracking-tighter text-primary-fixed-dim">NEWS_GRID_v1.0</h1>
+</div>
+<button class="material-symbols-outlined text-primary-fixed-dim p-unit hover:bg-surface-variant active:translate-x-[2px] active:translate-y-[2px]">search</button>
+</header>
+<main class="max-w-4xl mx-auto px-margin-mobile py-stack-lg pb-32">
+<!-- Breadcrumbs / Meta -->
+<div class="flex flex-wrap gap-stack-sm mb-stack-md items-center">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-1 font-label-caps text-label-caps">TOP_STORY</span>
+<span class="text-on-surface-variant font-label-caps text-label-caps">[2024.05.22_14:42_UTC]</span>
+<div class="h-px flex-grow bg-outline-variant"></div>
+</div>
+<!-- Article Headline -->
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary-fixed-dim mb-stack-lg uppercase tracking-tighter border-l-4 border-primary-container pl-4">
+            BREAKING: Neural-Link Protocols Breach Decentralized Ledger Security
+        </h2>
+<!-- Featured Image with Pixel Frame -->
+<div class="relative p-1 bg-outline mb-stack-lg">
+<div class="relative aspect-video overflow-hidden border-4 border-background">
+<img alt="Cybersecurity concept" class="w-full h-full object-cover filter brightness-75 contrast-125 grayscale-[0.2]" data-alt="A high-contrast cinematic photograph of a futuristic computer terminal displaying neon green cascading code and complex circuit diagrams. The lighting is dark and atmospheric, evoking a retro-future cyberpunk aesthetic. Intense green light reflects off a metallic keyboard. The image has a subtle film grain and chromatic aberration consistent with a CRT monitor display from a high-fidelity retro workstation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWWIiF4i7Rjdhbc8dCh4CZzx-LPq0R4gVsy2PE68iyHFSr5YiwaHqWJLkA8s0WruztpSusvnKE-dQQwIfpyQ5KaoVmgKHiTbEBojMBQsrJ_2Ifdtv45dktzr1tBDTqlmMFe8YGJzwmv3OqvH_Yvh0AG3JorMb29r37-t55IdKsjuQ2psSxhZ3J1ZxKb1tsmAMfVAr5nbonK5u308dIDoY_tk6XJip7kxOy-zvIGgnfuu8TTeI5z3m2Jl_dW5Y40mQAxPiNytlV192p"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<p class="font-label-caps text-label-caps text-primary bg-background/60 backdrop-blur-sm p-1">
+                        FIG. 01: UNAUTHORIZED_ACCESS_DETECTED
+                    </p>
+</div>
+</div>
+</div>
+<!-- Article Body -->
+<article class="space-y-stack-md text-on-surface font-body-lg leading-relaxed">
+<p class="first-letter:text-5xl first-letter:font-bold first-letter:text-primary-fixed-dim first-letter:mr-3 first-letter:float-left border-b border-outline-variant pb-stack-sm">
+                The global decentralized financial network experienced a critical synchronization failure today as emerging neural-link protocols attempted an un-indexed handshake with the primary ledger. Sources indicate the "Ghost Hand" exploit was used.
+            </p>
+<div class="bg-surface-container p-stack-md border-l-4 border-secondary-fixed-dim">
+<p class="text-secondary-fixed-dim font-headline-md italic">
+                    "We observed a recursive loop in the validation sub-routines that shouldn't be possible under current physics."
+                </p>
+<p class="text-on-surface-variant font-label-caps mt-2">— DR. ELARA VANCE, CHIEF ARCHITECT</p>
+</div>
+<p>
+                As the flickering screen of the main console stabilized, investigators found traces of an old-world encryption standard. The irony was not lost on the cyber-forensics team: the newest neural tech had been defeated by a legacy algorithm from the late 20th century.
+            </p>
+<ul class="space-y-unit py-stack-sm">
+<li class="flex gap-4 items-start">
+<span class="text-primary-fixed-dim mt-1 material-symbols-outlined scale-75" data-weight="fill">square</span>
+<span>System downtime reached 404 seconds in the primary sector.</span>
+</li>
+<li class="flex gap-4 items-start">
+<span class="text-primary-fixed-dim mt-1 material-symbols-outlined scale-75" data-weight="fill">square</span>
+<span>Total data loss estimated at 0.003% (within acceptable margins).</span>
+</li>
+<li class="flex gap-4 items-start">
+<span class="text-primary-fixed-dim mt-1 material-symbols-outlined scale-75" data-weight="fill">square</span>
+<span>Threat level remains at [AMBER_PULSE].</span>
+</li>
+</ul>
+<p class="terminal-cursor">
+                Security patches are being deployed via peer-to-peer broadcast. All node operators are advised to cycle their cryptographic keys immediately. The digital landscape continues to shift as the line between human consciousness and silicon logic blurs.
+            </p>
+</article>
+<!-- Interactive Controls -->
+<div class="mt-stack-lg pt-stack-md border-t-2 border-outline-variant flex flex-wrap gap-stack-md justify-between items-center">
+<div class="flex gap-stack-sm">
+<button class="bg-primary-container text-on-primary-container px-4 py-2 flex items-center gap-2 border-2 border-outline active:translate-y-1 transition-all">
+<span class="material-symbols-outlined">gamepad</span>
+<span class="font-label-caps">SHARE_LINK</span>
+</button>
+<button class="border-2 border-outline text-primary-fixed-dim px-4 py-2 flex items-center gap-2 hover:bg-surface-variant active:translate-y-1 transition-all">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="font-label-caps">SAVE</span>
+</button>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span class="font-label-caps text-label-caps">READ_COUNT: 42,091</span>
+</div>
+</div>
+<!-- Related Section -->
+<section class="mt-stack-lg">
+<h3 class="font-headline-md text-headline-md text-secondary-fixed-dim mb-stack-md uppercase tracking-tight">CONTINUE_READING</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="bg-surface-container-low border-2 border-outline-variant p-4 hover:border-primary-fixed-dim transition-colors group cursor-pointer">
+<span class="text-on-surface-variant font-label-caps text-[10px]">[NEXT_UP]</span>
+<h4 class="font-headline-md text-on-surface mt-1 group-hover:text-primary-fixed-dim">Carbon-Neutral Servers Face Cooling Crisis</h4>
+</div>
+<div class="bg-surface-container-low border-2 border-outline-variant p-4 hover:border-primary-fixed-dim transition-colors group cursor-pointer">
+<span class="text-on-surface-variant font-label-caps text-[10px]">[ARCHIVE]</span>
+<h4 class="font-headline-md text-on-surface mt-1 group-hover:text-primary-fixed-dim">The Rise of Analog Audio in Neo-Tokyo</h4>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center bg-background border-t-4 border-double border-outline h-[64px] z-50">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container p-unit border-2 border-outline transition-all active:translate-y-1" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-label-caps">FEED</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-unit opacity-70 hover:bg-surface-variant transition-all active:translate-y-1" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-caps text-label-caps">BROWSE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-unit opacity-70 hover:bg-surface-variant transition-all active:translate-y-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">SET</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                // Potential subtle sound effect trigger here
+            });
+        });
+
+        // Simulating loading of terminal content
+        window.addEventListener('load', () => {
+            const article = document.querySelector('article');
+            article.style.opacity = '0';
+            setTimeout(() => {
+                article.style.transition = 'opacity 0.5s ease-in';
+                article.style.opacity = '1';
+            }, 300);
+        });
+    </script>
+</body></html>

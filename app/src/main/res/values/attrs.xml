@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+        Custom theme attributes for pixel-art semantic colors.
+
+        IMPORTANT: Attributes must be declared at TOP LEVEL (not only inside
+        <declare-styleable>) for ?attr/colorPixelAccent etc. to resolve in
+        layout XML files. The <declare-styleable> is kept for documentation
+        but the standalone <attr> entries below are what makes ?attr/ work.
+    -->
+
+    <!-- Neon/amber accent — active elements, headlines, cursor -->
+    <attr name="colorPixelAccent"         format="color" />
+    <!-- Golden highlight — ticker, level badges, section headers -->
+    <attr name="colorPixelHighlight"      format="color" />
+    <!-- Error / GAME OVER red -->
+    <attr name="colorPixelError"          format="color" />
+    <!-- Primary pixel border -->
+    <attr name="colorPixelBorder"         format="color" />
+    <!-- Subtle secondary pixel border -->
+    <attr name="colorPixelBorderVariant"  format="color" />
+    <!-- Card / panel background -->
+    <attr name="colorCardBackground"      format="color" />
+    <!-- Breaking news ticker background -->
+    <attr name="colorTickerBackground"    format="color" />
+    <!-- Breaking news ticker text -->
+    <attr name="colorTickerText"          format="color" />
+    <!-- Bottom HUD nav bar background -->
+    <attr name="colorNavBackground"       format="color" />
+    <!-- Active nav tab highlight background -->
+    <attr name="colorNavActiveBackground" format="color" />
+    <!-- Active nav tab text / icon color -->
+    <attr name="colorNavActiveText"       format="color" />
+    <!-- Inactive nav tab text / icon color -->
+    <attr name="colorNavInactiveText"     format="color" />
+
+    <attr name="inverseSurface" format="color" />
+    <attr name="inverseOnSurface" format="color" />
+    <attr name="inversePrimary" format="color" />
+
+    <!-- Styleable grouping (for documentation / tooling only) -->
+    <declare-styleable name="BitStreamTheme">
+        <attr name="colorPixelAccent" />
+        <attr name="colorPixelHighlight" />
+        <attr name="colorPixelError" />
+        <attr name="colorPixelBorder" />
+        <attr name="colorPixelBorderVariant" />
+        <attr name="colorCardBackground" />
+        <attr name="colorTickerBackground" />
+        <attr name="colorTickerText" />
+        <attr name="colorNavBackground" />
+        <attr name="colorNavActiveBackground" />
+        <attr name="colorNavActiveText" />
+        <attr name="colorNavInactiveText" />
+    </declare-styleable>
+
+</resources>

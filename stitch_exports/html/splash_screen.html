@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bit-Stream News | Initializing...</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            5% { opacity: 0.95; }
+            10% { opacity: 0.9; }
+            15% { opacity: 0.93; }
+            20% { opacity: 0.98; }
+            100% { opacity: 1; }
+        }
+        @keyframes logo-float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.02); }
+        }
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.1) 50%
+            ), linear-gradient(
+                90deg,
+                rgba(255, 0, 0, 0.03),
+                rgba(0, 255, 0, 0.01),
+                rgba(0, 0, 255, 0.03)
+            );
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 101;
+            background: linear-gradient(0deg, rgba(0, 230, 57, 0) 0%, rgba(0, 230, 57, 0.05) 50%, rgba(0, 230, 57, 0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 8s linear infinite;
+        }
+        .blink { animation: blink 1s step-end infinite; }
+        .flicker { animation: flicker 0.15s infinite; }
+        .logo-anim { animation: logo-float 4s ease-in-out infinite; }
+        
+        .pixel-border {
+            box-shadow: 
+                0 -4px 0 0 #131313,
+                0 4px 0 0 #131313,
+                -4px 0 0 0 #131313,
+                4px 0 0 0 #131313,
+                0 -8px 0 0 #00e639,
+                0 8px 0 0 #00e639,
+                -8px 0 0 0 #00e639,
+                4px 0 0 0 #00e639; /* Simplified pixel effect */
+        }
+        
+        body {
+            background-color: #131313;
+            overflow: hidden;
+            cursor: none;
+        }
+
+        .terminal-block {
+            display: inline-block;
+            width: 12px;
+            height: 24px;
+            background-color: #00e639;
+            vertical-align: middle;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#dec800",
+                      "inverse-primary": "#006e16",
+                      "primary": "#ebffe2",
+                      "on-background": "#e5e2e1",
+                      "outline-variant": "#3b4b37",
+                      "outline": "#84967e",
+                      "on-primary-fixed-variant": "#00530e",
+                      "on-tertiary-container": "#c4000d",
+                      "error-container": "#93000a",
+                      "tertiary": "#fff7f6",
+                      "primary-container": "#00ff41",
+                      "error": "#ffb4ab",
+                      "surface-tint": "#00e639",
+                      "on-secondary-fixed": "#201c00",
+                      "on-tertiary-fixed": "#410001",
+                      "on-primary-fixed": "#002203",
+                      "tertiary-fixed-dim": "#ffb4aa",
+                      "on-secondary-fixed-variant": "#504700",
+                      "on-surface-variant": "#b9ccb2",
+                      "on-primary-container": "#007117",
+                      "on-secondary": "#373100",
+                      "secondary": "#ffffff",
+                      "on-primary": "#003907",
+                      "surface-container": "#201f1f",
+                      "on-secondary-container": "#716500",
+                      "surface-bright": "#3a3939",
+                      "surface-dim": "#131313",
+                      "inverse-surface": "#e5e2e1",
+                      "inverse-on-surface": "#313030",
+                      "tertiary-fixed": "#ffdad5",
+                      "background": "#131313",
+                      "surface-variant": "#353534",
+                      "secondary-container": "#fde400",
+                      "surface-container-high": "#2a2a2a",
+                      "on-surface": "#e5e2e1",
+                      "secondary-fixed": "#fde400",
+                      "surface": "#131313",
+                      "on-error": "#690005",
+                      "primary-fixed": "#72ff70",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed-variant": "#930007",
+                      "tertiary-container": "#ffd2cc",
+                      "on-tertiary": "#690003",
+                      "primary-fixed-dim": "#00e639",
+                      "surface-container-low": "#1c1b1b",
+                      "surface-container-highest": "#353534",
+                      "surface-container-lowest": "#0e0e0e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "stack-md": "16px",
+                      "stack-sm": "8px",
+                      "unit": "8px",
+                      "gutter": "16px",
+                      "margin-desktop": "32px",
+                      "stack-lg": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Space Mono"],
+                      "body-lg": ["Space Mono"],
+                      "body-md": ["Space Mono"],
+                      "headline-lg-mobile": ["Space Mono"],
+                      "label-caps": ["Space Mono"],
+                      "headline-md": ["Space Mono"]
+              },
+              "fontSize": {
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-1px", "fontWeight": "700"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "fontWeight": "700"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background flex flex-col items-center justify-center min-h-screen relative overflow-hidden">
+<!-- CRT Overlays -->
+<div class="crt-overlay"></div>
+<div class="scanline"></div>
+<!-- Background Grid -->
+<div class="absolute inset-0 z-0 opacity-10" style="background-image: radial-gradient(#00e639 1px, transparent 1px); background-size: 32px 32px;"></div>
+<!-- Main Content Shell -->
+<main class="relative z-10 w-full max-w-2xl px-margin-mobile flex flex-col items-center flicker">
+<!-- Animated 8-Bit Logo Container -->
+<div class="logo-anim mb-stack-lg relative">
+<div class="w-48 h-48 flex items-center justify-center border-4 border-primary-fixed-dim bg-surface-container-lowest shadow-[8px_8px_0px_0px_rgba(0,230,57,0.3)]">
+<div class="relative flex flex-col items-center">
+<!-- Retro Terminal Icon -->
+<span class="material-symbols-outlined text-[96px] text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">
+                        terminal
+                    </span>
+<div class="absolute -bottom-4 bg-primary-fixed-dim text-background px-unit font-label-caps text-label-caps font-bold">
+                        V1.0.4
+                    </div>
+</div>
+</div>
+<!-- Floating Data Bits -->
+<div class="absolute -top-4 -right-4 w-8 h-8 bg-secondary-fixed-dim animate-pulse"></div>
+<div class="absolute -bottom-8 -left-4 w-6 h-6 bg-primary-fixed-dim animate-bounce delay-100"></div>
+</div>
+<!-- Brand Headline -->
+<div class="text-center mb-stack-lg">
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed-dim uppercase tracking-[0.2em] mb-stack-sm">
+                BIT-STREAM NEWS
+            </h1>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-60">
+                // SYSTEM_PROTOCOL: AGGREGATE_FEED
+            </p>
+</div>
+<!-- Terminal Status Window -->
+<div class="w-full bg-surface-container-low border-2 border-outline-variant p-stack-md mb-stack-lg font-mono text-primary-fixed-dim">
+<div class="flex items-center gap-stack-sm mb-stack-sm">
+<div class="w-3 h-3 bg-error rounded-full"></div>
+<div class="w-3 h-3 bg-secondary-fixed-dim rounded-full"></div>
+<div class="w-3 h-3 bg-primary-fixed-dim rounded-full"></div>
+<span class="text-label-caps ml-auto opacity-40">CONSOLE.LOG</span>
+</div>
+<div class="text-body-md font-body-md leading-relaxed min-h-[80px]" id="status-text">
+<span class="text-secondary-fixed-dim">&gt;</span> INITIALIZING KERNEL...<br/>
+<span class="text-secondary-fixed-dim">&gt;</span> DECRYPTING PACKETS...<br/>
+<span class="text-secondary-fixed-dim">&gt;</span> CONNECTING TO GRID...
+            </div>
+</div>
+<!-- Pixel Loading Bar -->
+<div class="w-full max-w-md">
+<div class="flex justify-between items-end mb-unit">
+<div class="flex items-center gap-unit">
+<span class="font-headline-md text-headline-md text-primary-fixed-dim">LOADING DATA</span>
+<div class="terminal-block blink"></div>
+</div>
+<span class="font-headline-md text-headline-md text-primary-fixed-dim" id="progress-percent">0%</span>
+</div>
+<!-- Progress Bar Frame -->
+<div class="w-full h-10 border-4 border-primary-fixed-dim p-1 bg-surface-container-lowest">
+<div class="h-full bg-primary-fixed-dim transition-all duration-300 ease-out flex items-center overflow-hidden" id="progress-bar" style="width: 0%;">
+<!-- Internal Pattern for that pixel look -->
+<div class="w-full h-full opacity-30" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 8px, #131313 8px, #131313 10px);"></div>
+</div>
+</div>
+</div>
+<!-- Footer Meta -->
+<div class="mt-stack-lg text-on-surface-variant opacity-40 font-label-caps text-label-caps text-center">
+            ESTABLISHING SECURE HANDSHAKE AT NODE_77-X<br/>
+            © 1984-20XX BIT-STREAM NEURAL LINK
+        </div>
+</main>
+<!-- UI Audio Elements (Muted by default/simulation) -->
+<div class="hidden" id="ui-fx"></div>
+<script>
+        // Simulation of loading process
+        const progressBar = document.getElementById('progress-bar');
+        const progressPercent = document.getElementById('progress-percent');
+        const statusText = document.getElementById('status-text');
+        
+        let progress = 0;
+        const statusMessages = [
+            "CONNECTING TO GLOBAL FEED...",
+            "SYNCING ENCRYPTION KEYS...",
+            "BUFFERING PIXEL ASSETS...",
+            "BYPASSING FIREWALLS...",
+            "RENDERING NEWS GRID...",
+            "OPTIMIZING SCANLINES...",
+            "SYSTEM READY."
+        ];
+
+        function updateProgress() {
+            if (progress < 100) {
+                // Random jumps to feel like a real old computer
+                const increment = Math.random() * 8;
+                progress = Math.min(progress + increment, 100);
+                
+                progressBar.style.width = `${progress}%`;
+                progressPercent.innerText = `${Math.floor(progress)}%`;
+
+                // Update status messages based on thresholds
+                if (progress > 15 && progress < 30) updateStatus(0);
+                if (progress > 35 && progress < 50) updateStatus(1);
+                if (progress > 55 && progress < 70) updateStatus(2);
+                if (progress > 75 && progress < 85) updateStatus(3);
+                if (progress > 90) updateStatus(4);
+                
+                const nextStep = Math.random() * 400 + 100;
+                setTimeout(updateProgress, nextStep);
+            } else {
+                updateStatus(6);
+                // Simulate "Press Start" or auto-redirect
+                progressPercent.innerHTML = "OK";
+                progressPercent.classList.add('blink');
+            }
+        }
+
+        let currentStatusIndex = -1;
+        function updateStatus(index) {
+            if (index !== currentStatusIndex) {
+                currentStatusIndex = index;
+                const newSpan = document.createElement('div');
+                newSpan.innerHTML = `<span class="text-secondary-fixed-dim">></span> ${statusMessages[index]}`;
+                statusText.appendChild(newSpan);
+                
+                // Keep only last 4 messages
+                while (statusText.children.length > 4) {
+                    statusText.removeChild(statusText.firstChild);
+                }
+            }
+        }
+
+        // Initialize loading
+        setTimeout(updateProgress, 1000);
+
+        // Add random "glitch" effect to logo
+        setInterval(() => {
+            const logo = document.querySelector('.logo-anim');
+            if (Math.random() > 0.95) {
+                logo.style.transform = `translate(${Math.random()*4-2}px, ${Math.random()*4-2}px)`;
+                logo.style.filter = `hue-rotate(${Math.random()*90}deg)`;
+                setTimeout(() => {
+                    logo.style.transform = '';
+                    logo.style.filter = '';
+                }, 50);
+            }
+        }, 100);
+    </script>
+</body></html>

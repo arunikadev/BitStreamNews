@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+        ================================================================
+        BITSTREAMEWS STYLE SYSTEM
+        8-bit / Pixel Art design system — all sizes on 8dp grid
+        Font: Press Start 2P (press_start_2p.ttf)
+        Border radius: 0dp everywhere (pixel art rule)
+        ================================================================
+    -->
+
+    <!-- ============================================================
+         TEXT APPEARANCES
+         Mapped from Stitch design tokens:
+           headline-lg:        24sp / line-height 32sp / weight 700
+           headline-md:        20sp / line-height 28sp / weight 700
+           headline-lg-mobile: 20sp / line-height 28sp / weight 700
+           body-lg:            16sp / line-height 24sp / weight 400
+           body-md:            14sp / line-height 20sp / weight 400
+           label-caps:         12sp / line-height 16sp / weight 700 / UPPERCASE
+         ============================================================ -->
+
+    <style name="TextAppearance.BitStreamNews.HeadlineLg" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">@font/press_start_2p</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:lineHeight" tools:ignore="NewApi">32sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.04</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.BitStreamNews.HeadlineMd" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/press_start_2p</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:lineHeight" tools:ignore="NewApi">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.BitStreamNews.HeadlineSm" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">@font/press_start_2p</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:lineHeight" tools:ignore="NewApi">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.BitStreamNews.BodyLg" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/press_start_2p</item>
+        <item name="android:textSize">8sp</item>
+        <item name="android:lineHeight" tools:ignore="NewApi">14sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.BitStreamNews.BodyMd" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/press_start_2p</item>
+        <item name="android:textSize">7sp</item>
+        <item name="android:lineHeight" tools:ignore="NewApi">12sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.BitStreamNews.LabelCaps" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:fontFamily">@font/press_start_2p</item>
+        <item name="android:textSize">6sp</item>
+        <item name="android:lineHeight" tools:ignore="NewApi">8sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.08</item>
+    </style>
+
+    <!-- App title style (blinking ticker text) -->
+    <style name="TextAppearance.BitStreamNews.AppTitle" parent="TextAppearance.BitStreamNews.HeadlineMd">
+        <item name="android:textColor">?attr/colorPixelHighlight</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <!-- Section header (with > prefix look) -->
+    <style name="TextAppearance.BitStreamNews.SectionHeader" parent="TextAppearance.BitStreamNews.LabelCaps">
+        <item name="android:textColor">?attr/colorPixelAccent</item>
+        <item name="android:background">?attr/colorCardBackground</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <!-- ============================================================
+         WIDGET STYLES
+         ============================================================ -->
+
+    <!-- PixelText: base text widget using Press Start 2P -->
+    <style name="Widget.BitStreamNews.PixelText" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/press_start_2p</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- PixelButton: rectangular with solid border, hard shadow offset -->
+    <style name="Widget.BitStreamNews.PixelButton" parent="Widget.Material3.Button">
+        <item name="android:fontFamily">@font/press_start_2p</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">8sp</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="backgroundTint">?attr/colorPrimaryContainer</item>
+        <item name="android:textColor">?attr/colorOnPrimaryContainer</item>
+        <item name="strokeColor">?attr/colorPixelBorder</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="rippleColor">@color/transparent</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <!-- PixelButton outlined (ghost / secondary action) -->
+    <style name="Widget.BitStreamNews.PixelButton.Outlined" parent="Widget.BitStreamNews.PixelButton">
+        <item name="backgroundTint">@color/transparent</item>
+        <item name="android:textColor">?attr/colorPixelAccent</item>
+        <item name="strokeColor">?attr/colorPixelBorder</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
+    <!-- RETRY button style (GAME OVER screen) — large, prominent -->
+    <style name="Widget.BitStreamNews.PixelButton.Retry" parent="Widget.BitStreamNews.PixelButton">
+        <item name="android:textSize">10sp</item>
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+        <item name="strokeColor">?attr/colorPixelBorder</item>
+        <item name="strokeWidth">4dp</item>
+    </style>
+
+    <!-- PixelCard: flat, hard-shadow card (no rounded corners) -->
+    <style name="Widget.BitStreamNews.PixelCard" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">?attr/colorCardBackground</item>
+        <item name="cardCornerRadius">0dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">?attr/colorPixelAccent</item>
+        <item name="strokeWidth">2dp</item>
+        <!-- Hard pixel shadow via padding offset: achieved with background drawable -->
+    </style>
+
+    <!-- PixelCard: secondary variant (muted border) -->
+    <style name="Widget.BitStreamNews.PixelCard.Secondary" parent="Widget.BitStreamNews.PixelCard">
+        <item name="strokeColor">?attr/colorPixelBorder</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
+    <!-- Category tile card -->
+    <style name="Widget.BitStreamNews.PixelCard.CategoryTile" parent="Widget.BitStreamNews.PixelCard">
+        <item name="cardBackgroundColor">?attr/colorSurfaceVariant</item>
+        <item name="strokeColor">?attr/colorPixelBorderVariant</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
+    <!-- PixelToolbar style -->
+    <style name="Widget.BitStreamNews.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">?attr/colorSurface</item>
+        <item name="titleTextColor">?attr/colorPixelAccent</item>
+        <item name="titleTextAppearance">@style/TextAppearance.BitStreamNews.HeadlineMd</item>
+        <item name="android:elevation">0dp</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
+
+    <!-- Bottom NavigationView -->
+    <style name="Widget.BitStreamNews.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">?attr/colorNavBackground</item>
+        <item name="itemTextColor">@color/bottom_nav_text_color</item>
+        <item name="itemIconTint">@color/bottom_nav_text_color</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.BitStreamNews.LabelCaps</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.BitStreamNews.LabelCaps</item>
+        <item name="itemRippleColor">@color/transparent</item>
+        <item name="elevation">0dp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+
+    <!-- Switch style (pixel toggle) -->
+    <style name="Widget.BitStreamNews.Switch" parent="Widget.Material3.CompoundButton.Switch">
+        <item name="thumbTint">?attr/colorPixelAccent</item>
+        <item name="trackTint">?attr/colorSurfaceVariant</item>
+        <item name="trackDecorationTint">?attr/colorPixelBorder</item>
+    </style>
+
+    <!-- Progress bar / loading bar (pixel block style) -->
+    <style name="Widget.BitStreamNews.ProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressTint">?attr/colorPixelAccent</item>
+        <item name="android:progressBackgroundTint">?attr/colorSurfaceContainerLowest</item>
+        <item name="android:minHeight">24dp</item>
+        <item name="android:maxHeight">24dp</item>
+    </style>
+
+    <!-- ============================================================
+         LAYOUT SPACING — 8dp grid system
+         ============================================================ -->
+
+    <!-- Margin system -->
+    <style name="Margin.BitStreamNews" parent="">
+    </style>
+
+    <style name="Margin.BitStreamNews.Unit" parent="Margin.BitStreamNews">
+        <item name="android:layout_margin">8dp</item>
+    </style>
+    <style name="Margin.BitStreamNews.StackSm" parent="Margin.BitStreamNews">
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+    <style name="Margin.BitStreamNews.StackMd" parent="Margin.BitStreamNews">
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+    <style name="Margin.BitStreamNews.StackLg" parent="Margin.BitStreamNews">
+        <item name="android:layout_marginBottom">32dp</item>
+    </style>
+
+    <!-- ============================================================
+         ACTIVITY / FRAGMENT TRANSITIONS (slide pixel-step)
+         ============================================================ -->
+
+    <style name="Animation.BitStreamNews.Slide" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+</resources>

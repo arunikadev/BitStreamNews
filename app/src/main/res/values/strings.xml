@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App -->
+    <string name="app_name">BIT-STREAM NEWS</string>
+    <string name="app_version">v1.0.4</string>
+    <string name="app_tagline">// SYSTEM_PROTOCOL: AGGREGATE_FEED</string>
+    <string name="app_copyright">© 1984-20XX BIT-STREAM NEURAL LINK</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_title">BIT-STREAM NEWS</string>
+    <string name="splash_loading">LOADING DATA</string>
+    <string name="splash_init_kernel">INITIALIZING KERNEL…</string>
+    <string name="splash_decrypting">DECRYPTING PACKETS…</string>
+    <string name="splash_connecting">CONNECTING TO GRID…</string>
+    <string name="splash_system_ready">SYSTEM READY.</string>
+    <string name="splash_handshake">ESTABLISHING SECURE HANDSHAKE AT NODE_77-X</string>
+
+    <!-- Toolbar / AppBar -->
+    <string name="toolbar_title">NEWS_GRID_v1.0</string>
+    <string name="content_description_app_logo">Terminal Icon — BitStreamNews Logo</string>
+    <string name="content_description_search">Search news database</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_feed">FEED</string>
+    <string name="nav_browse">BROWSE</string>
+    <string name="nav_settings">SET</string>
+
+    <!-- Home Feed Fragment -->
+    <string name="home_title">NEWS_GRID_v1.0</string>
+    <string name="home_breaking_ticker">BREAKING: PIXEL ART REVOLUTION CONTINUES… SYSTEM UPDATE 2.4.0 DEPLOYED… NEW BIT-STREAM SERVERS ONLINE… DATA FRAGMENTATION MINIMAL…</string>
+    <string name="home_search_hint">SEARCH_DATABASE…</string>
+    <string name="home_loading">FETCHING_MORE_DATA…</string>
+    <string name="home_empty_title">NO_DATA_FOUND</string>
+    <string name="home_empty_subtitle">// DATABASE RETURNED EMPTY RESULT SET</string>
+    <string name="home_read_more">READ_MORE_&gt;</string>
+    <string name="home_refresh">REFRESH</string>
+    <string name="home_top_story_label">TOP_STORY // URGENT</string>
+
+    <!-- Category Filter Chips (Home Feed) -->
+    <string name="category_all">ALL</string>
+    <string name="category_world">WORLD</string>
+    <string name="category_tech">TECH</string>
+    <string name="category_games">GAMES</string>
+    <string name="category_vibe">VIBE</string>
+    <string name="category_business">BIZ</string>
+    <string name="category_sports">SPORT</string>
+    <string name="category_science">SCI</string>
+    <string name="category_health">HEALTH</string>
+
+    <!-- Category Browse Fragment -->
+    <string name="browse_title">BROWSE_CATEGORIES</string>
+    <string name="browse_subtitle">// SELECT TRANSMISSION CHANNEL</string>
+    <string name="browse_select_prompt">SELECT_CATEGORY.EXE</string>
+
+    <!-- Category tile labels -->
+    <string name="cat_tile_world">WORLD\nNEWS</string>
+    <string name="cat_tile_tech">TECH\nUPDATE</string>
+    <string name="cat_tile_games">GAME\nFEED</string>
+    <string name="cat_tile_vibe">VIBE\nCHECK</string>
+    <string name="cat_tile_business">BIZ\nWIRE</string>
+    <string name="cat_tile_sports">SPORT\nDATA</string>
+    <string name="cat_tile_science">SCI\nLOG</string>
+    <string name="cat_tile_health">HEALTH\nPACKET</string>
+
+    <!-- News Detail Activity -->
+    <string name="detail_back">RETURN TO TERMINAL</string>
+    <string name="detail_source_label">SOURCE://</string>
+    <string name="detail_published_label">TIMESTAMP:</string>
+    <string name="detail_category_label">CHANNEL:</string>
+    <string name="detail_read_full">READ_FULL_ARTICLE_&gt;&gt;</string>
+    <string name="detail_share">SHARE_PACKET</string>
+    <string name="detail_image_placeholder">IMG_NOT_FOUND</string>
+    <string name="content_description_news_image">News article thumbnail image</string>
+
+    <!-- Settings Fragment -->
+    <string name="settings_title">BIOS_SETTINGS_v1.0</string>
+    <string name="settings_subtitle">CMOS SETUP UTILITY — COPYRIGHT (C) 1984-2024\nv1.0.4-LATEST_STABLE // KERNEL: 8-BIT-CORE</string>
+    <string name="settings_section_video">VIDEO_OUTPUT</string>
+    <string name="settings_dark_mode_title">DARK_MODE</string>
+    <string name="settings_dark_mode_subtitle">ENABLE PHOSPHOR_BLACK</string>
+    <string name="settings_section_comms">COMMS_LINK</string>
+    <string name="settings_notifications_title">NOTIFICATIONS</string>
+    <string name="settings_notifications_subtitle">INTERRUPT_MODE_ON</string>
+    <string name="settings_notifications_warning">[NOTICE]: ENABLING NOTIFICATIONS MAY CAUSE SUDDEN POP-UPS ON MAIN TERMINAL. PROCEED WITH CAUTION.</string>
+    <string name="settings_section_subsystems">SUB_SYSTEMS</string>
+    <string name="settings_cache_title">CACHE_STORAGE</string>
+    <string name="settings_cache_subtitle">USED: %1$s / %2$s</string>
+    <string name="settings_clear_cache">PURGE</string>
+    <string name="settings_about_title">ABOUT_SYSTEM</string>
+    <string name="settings_about_subtitle">BUILD: BIT-STREAM // NODE: MOBILE_CLIENT</string>
+    <string name="settings_save">COMMIT_CHANGES [F10]</string>
+    <string name="settings_discard">DISCARD_EXIT [ESC]</string>
+    <string name="settings_cache_cleared">CACHE_PURGED: MEMORY_FREED</string>
+
+    <!-- Error State / GAME OVER Screen -->
+    <string name="error_system_fail">SYSTEM_FAIL</string>
+    <string name="error_code">[ERROR_CODE: 0x00002A]</string>
+    <string name="error_game_over">GAME OVER</string>
+    <string name="error_connection_lost">CONNECTION LOST</string>
+    <string name="error_connection_detail">Host: news-grid-main.v1 // Status: Timed out during handshake</string>
+    <string name="error_retry">RETRY</string>
+    <string name="error_press_start">PRESS START</string>
+    <string name="error_no_internet_title">NO_SIGNAL</string>
+    <string name="error_no_internet_detail">// NETWORK INTERFACE: OFFLINE\nCHECK CONNECTION AND RETRY</string>
+    <string name="error_generic_title">KERNEL_PANIC</string>
+    <string name="error_generic_detail">// UNEXPECTED EXCEPTION IN MAIN_THREAD\nERROR: %1$s</string>
+    <string name="error_terminal_line1">&gt; Initializing local recovery protocols…</string>
+    <string name="error_terminal_line2">&gt; Pinging gateway 192.168.1.1 [FAIL]</string>
+    <string name="error_terminal_line3">&gt; Attempting packet reconstruction… [0%%]</string>
+    <string name="error_terminal_line4">&gt; FATAL ERROR: STACK_OVERFLOW_GRID_v1</string>
+
+    <!-- General UI strings -->
+    <string name="btn_ok">OK_&gt;</string>
+    <string name="btn_cancel">ABORT</string>
+    <string name="btn_confirm">CONFIRM</string>
+    <string name="loading_default">LOADING…</string>
+    <string name="offline_banner">// OFFLINE_MODE: DISPLAYING CACHED DATA</string>
+    <string name="timestamp_format">%1$s</string>
+
+    <!-- Content Descriptions (Accessibility) -->
+    <string name="cd_refresh_button">Refresh news feed from server</string>
+    <string name="cd_category_tile">Browse %1$s news category</string>
+    <string name="cd_back_button">Go back to previous screen</string>
+    <string name="cd_share_button">Share this article</string>
+    <string name="cd_theme_toggle">Toggle between light and dark theme</string>
+
+</resources>

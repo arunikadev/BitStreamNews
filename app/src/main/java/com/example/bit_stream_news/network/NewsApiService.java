@@ -7,62 +7,67 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 /**
- * NewsApiService — Retrofit interface for Real-Time News Data API.
+ * NewsApiService — Retrofit interface for NewsAPI.org
  *
- * Base URL (set in ApiClient): https://real-time-news-data.p.rapidapi.com/
+ * Base URL: https://newsapi.org/v2/
+ * Auth    : X-Api-Key header (injected by ApiClient interceptor)
  *
- * Actual endpoint reference for this API:
- *   GET /top-headlines
- *     ?language=en          — ISO 639-1 language code
- *     &country=US           — ISO 3166-1 alpha-2 country code (UPPERCASE)
- *     &limit=20             — max results (default 50, we use 20 to save quota)
+ * ── Endpoints ─────────────────────────────────────────────────────────────
  *
- *   GET /top-headlines
- *     ?language=en
- *     &topic=technology     — topic filter: technology|world|business|science|health|sports|entertainment|breaking-news|nation
- *     &limit=20
+ * GET /top-headlines
+ *   Returns breaking news for a country or category.
+ *   Params:
+ *     country  — 2-letter ISO code e.g. "us", "id"
+ *     category — business | entertainment | general | health |
+ *                science | sports | technology
+ *     pageSize — max articles (1-100, default 20)
  *
- *   GET /search
- *     ?query=keyword        — search terms
- *     &language=en
- *     &limit=20
+ * GET /everything
+ *   Full article search across all sources.
+ *   Params:
+ *     q        — keyword (required)
+ *     language — en | id | etc.
+ *     sortBy   — publishedAt | relevancy | popularity
+ *     pageSize — max articles (1-100, default 20)
  *
- * Auth headers (x-rapidapi-key, x-rapidapi-host) are injected by ApiClient's OkHttp interceptor.
- * Response structure: { "status": "OK", "data": [ { "title", "link", "source_name", ... } ] }
+ * Response fields (all available on free tier):
+ *   title, description, content, url, urlToImage, publishedAt,
+ *   source.id, source.name, author
  */
 public interface NewsApiService {
 
     /**
-     * Top headlines — no category filter.
-     * Uses 'country' param to get localised results.
+     * Top headlines — general, no category filter.
+     * Best for the Home Feed (latest news).
      */
     @GET("top-headlines")
     Call<NewsApiResponse> getTopHeadlines(
-            @Query("language") String language,
             @Query("country")  String country,
-            @Query("limit")    int    limit
+            @Query("pageSize") int    pageSize
     );
 
     /**
-     * Top headlines filtered by topic/category.
-     * The 'topic' param replaces 'country' when filtering by category.
-     * Accepted topics: technology | world | business | science | health |
-     *                  sports | entertainment | breaking-news | nation
+     * Top headlines filtered by category.
+     * Used by CategoryFragment to fetch news for a specific topic.
+     * Valid categories: business | entertainment | general | health |
+     *                   science | sports | technology
      */
     @GET("top-headlines")
     Call<NewsApiResponse> getNewsByCategory(
-            @Query("language") String language,
-            @Query("topic")    String topic,
-            @Query("limit")    int    limit
+            @Query("country")  String country,
+            @Query("category") String category,
+            @Query("pageSize") int    pageSize
     );
 
     /**
-     * Free-text search.
+     * Full-text search across all sources.
+     * Used when the user explicitly searches by keyword.
      */
-    @GET("search")
+    @GET("everything")
     Call<NewsApiResponse> searchNews(
-            @Query("query")    String query,
+            @Query("q")        String query,
             @Query("language") String language,
-            @Query("limit")    int    limit
+            @Query("sortBy")   String sortBy,
+            @Query("pageSize") int    pageSize
     );
 }

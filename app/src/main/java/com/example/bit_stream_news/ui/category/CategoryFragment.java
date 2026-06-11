@@ -50,7 +50,7 @@ public class CategoryFragment extends Fragment
     // ── Category definitions ──────────────────────────────────────────────────
 
     private static final List<CategoryAdapter.Category> CATEGORIES = Arrays.asList(
-        new CategoryAdapter.Category("[G]", "WORLD",   "Global data stream",      "world",         "LVL 01"),
+        new CategoryAdapter.Category("[G]", "WORLD",   "Global data stream",      "general",       "LVL 01"),
         new CategoryAdapter.Category("[#]", "TECH",    "Silicon & software logs", "technology",    "LVL 02"),
         new CategoryAdapter.Category("[$]", "FINANCE", "Market volatility data",  "business",      "LVL 03"),
         new CategoryAdapter.Category("[S]", "SCIENCE", "Discovery & lab reports", "science",       "LVL 04"),

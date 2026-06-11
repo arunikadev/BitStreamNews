@@ -64,9 +64,8 @@ public class NewsRepository {
 
     // ── API defaults ──────────────────────────────────────────────────────────
 
-    private static final String DEFAULT_LANGUAGE = "en";       // ISO language code
-    private static final String DEFAULT_COUNTRY  = "US";       // ISO country code (uppercase for this API)
-    private static final int    DEFAULT_LIMIT     = 20;         // keep low to save quota
+    private static final String DEFAULT_COUNTRY = "us";   // NewsAPI uses lowercase ISO-3166
+    private static final int    DEFAULT_LIMIT   = 20;      // keep low to save daily quota
 
     // ── Dependencies ──────────────────────────────────────────────────────────
 
@@ -126,8 +125,7 @@ public class NewsRepository {
                     postSuccess(callback, cached);
                 } else {
                     Log.d(TAG, "Cache empty — fetching from API (quota: 1 req).");
-                    fetchFromApiAndCache(DEFAULT_LANGUAGE, DEFAULT_COUNTRY,
-                                        null, DEFAULT_LIMIT, callback);
+                    fetchFromApiAndCache(DEFAULT_COUNTRY, null, DEFAULT_LIMIT, callback);
                 }
             } catch (Exception e) {
                 Log.e(TAG, "getNews failed", e);
@@ -153,8 +151,7 @@ public class NewsRepository {
     public void refreshNews(NewsCallback callback) {
         executor.execute(() -> {
             Log.d(TAG, "Force refresh requested by user (consumes 1 API request).");
-            fetchFromApiAndCache(DEFAULT_LANGUAGE, DEFAULT_COUNTRY,
-                                 null, DEFAULT_LIMIT, callback);
+            fetchFromApiAndCache(DEFAULT_COUNTRY, null, DEFAULT_LIMIT, callback);
         });
     }
 
@@ -192,7 +189,7 @@ public class NewsRepository {
     public void refreshNewsByCategory(String category, NewsCallback callback) {
         executor.execute(() -> {
             Log.d(TAG, "Category refresh for '" + category + "' (consumes 1 API request).");
-            fetchFromApiAndCache(DEFAULT_LANGUAGE, null, category, DEFAULT_LIMIT, callback);
+            fetchFromApiAndCache(DEFAULT_COUNTRY, category, DEFAULT_LIMIT, callback);
         });
     }
 
@@ -203,22 +200,24 @@ public class NewsRepository {
      * maps the response to {@link NewsArticle} objects, saves them to SQLite,
      * then posts the result to the callback on the main thread.
      *
-     * @param language  API language param.
-     * @param country   API country param (null to omit).
-     * @param topic     API topic/category param (null for top-headlines).
+     * NewsAPI.org endpoints:
+     *   - /top-headlines?country=us&pageSize=N
+     *   - /top-headlines?country=us&category=technology&pageSize=N
+     *
+     * @param country   e.g. "us" (lowercase, NewsAPI format).
+     * @param category  NewsAPI category string, or null for general headlines.
      * @param limit     Max articles to request.
      * @param callback  Callback to receive results.
      */
-    private void fetchFromApiAndCache(String language, String country,
-                                      String topic, int limit,
-                                      NewsCallback callback) {
+    private void fetchFromApiAndCache(String country, String category,
+                                      int limit, NewsCallback callback) {
         try {
-            // Choose the right endpoint
+            // Choose endpoint based on whether a category was requested
             Call<NewsApiResponse> call;
-            if (topic != null && !topic.isEmpty()) {
-                call = apiService.getNewsByCategory(language, topic, limit);
+            if (category != null && !category.isEmpty()) {
+                call = apiService.getNewsByCategory(country, category, limit);
             } else {
-                call = apiService.getTopHeadlines(language, country, limit);
+                call = apiService.getTopHeadlines(country, limit);
             }
 
             Response<NewsApiResponse> response = call.execute(); // synchronous on executor thread
@@ -250,7 +249,7 @@ public class NewsRepository {
                         + "', source: '" + first.getSourceName() + "'");
             }
 
-            List<NewsArticle> articles = mapToNewsArticles(rawArticles, topic);
+            List<NewsArticle> articles = mapToNewsArticles(rawArticles, category);
 
             if (articles.isEmpty()) {
                 Log.w(TAG, "Mapped 0 articles from " + rawArticles.size() + " raw. Check field names!");

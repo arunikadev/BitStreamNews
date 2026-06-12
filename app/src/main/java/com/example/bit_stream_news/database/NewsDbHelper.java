@@ -46,7 +46,7 @@ public class NewsDbHelper extends SQLiteOpenHelper {
     // ── Database metadata ─────────────────────────────────────────────────────
 
     public static final String DB_NAME    = "bitstreamNews.db";
-    public static final int    DB_VERSION = 1;
+    public static final int    DB_VERSION = 2;  // v2: added is_bookmarked column
 
     // ── Table / column constants ──────────────────────────────────────────────
 
@@ -60,6 +60,7 @@ public class NewsDbHelper extends SQLiteOpenHelper {
     public static final String COL_CATEGORY        = "category";
     public static final String COL_SOURCE          = "source";
     public static final String COL_CACHED_AT       = "cached_at";
+    public static final String COL_BOOKMARKED      = "is_bookmarked";
 
     // ── Cache TTL ─────────────────────────────────────────────────────────────
 
@@ -81,7 +82,8 @@ public class NewsDbHelper extends SQLiteOpenHelper {
             + COL_PUBLISHED_AT + " TEXT, "
             + COL_CATEGORY     + " TEXT DEFAULT 'general', "
             + COL_SOURCE       + " TEXT, "
-            + COL_CACHED_AT    + " INTEGER NOT NULL"
+            + COL_CACHED_AT    + " INTEGER NOT NULL, "
+            + COL_BOOKMARKED   + " INTEGER NOT NULL DEFAULT 0"
             + ");";
 
     private static final String SQL_CREATE_IDX_CATEGORY =
@@ -126,10 +128,13 @@ public class NewsDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(TAG, "Upgrading DB from v" + oldVersion + " to v" + newVersion
-                + ". Dropping old table.");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NEWS);
-        onCreate(db);
+        Log.w(TAG, "Upgrading DB from v" + oldVersion + " to v" + newVersion);
+        if (oldVersion < 2) {
+            // v1 → v2: add is_bookmarked column (non-destructive)
+            db.execSQL("ALTER TABLE " + TABLE_NEWS
+                    + " ADD COLUMN " + COL_BOOKMARKED + " INTEGER NOT NULL DEFAULT 0");
+            Log.d(TAG, "Migration v1→v2: added is_bookmarked column.");
+        }
     }
 
     @Override
@@ -252,13 +257,79 @@ public class NewsDbHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Wipes the entire cache. Called before a hard refresh so stale
-     * data from old categories doesn't persist.
+     * Wipes the entire cache BUT preserves bookmarked articles.
+     * Called before a hard refresh.
      */
     public void clearAllCache() {
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE_NEWS, null, null);
-        Log.d(TAG, "Cache fully cleared.");
+        // Only delete non-bookmarked rows so saved articles survive refresh
+        int deleted = db.delete(TABLE_NEWS, COL_BOOKMARKED + " = 0", null);
+        Log.d(TAG, "Cache cleared: " + deleted + " non-bookmarked rows removed.");
+    }
+
+    // ── Bookmark operations ───────────────────────────────────────────────────
+
+    /**
+     * Marks an article as bookmarked (is_bookmarked = 1).
+     * The article must already exist in the news table (it does, because
+     * the user can only bookmark after viewing from the cache).
+     *
+     * @param articleId  the id column value (URL hash).
+     */
+    public void bookmarkArticle(String articleId) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues(1);
+        cv.put(COL_BOOKMARKED, 1);
+        int rows = db.update(TABLE_NEWS, cv, COL_ID + " = ?", new String[]{articleId});
+        Log.d(TAG, "bookmarkArticle: updated " + rows + " row(s) for id=" + articleId);
+    }
+
+    /**
+     * Removes bookmark from an article (is_bookmarked = 0).
+     *
+     * @param articleId  the id column value.
+     */
+    public void removeBookmark(String articleId) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues(1);
+        cv.put(COL_BOOKMARKED, 0);
+        int rows = db.update(TABLE_NEWS, cv, COL_ID + " = ?", new String[]{articleId});
+        Log.d(TAG, "removeBookmark: updated " + rows + " row(s) for id=" + articleId);
+    }
+
+    /**
+     * Returns true if the article is currently bookmarked.
+     *
+     * @param articleId  the id column value.
+     */
+    public boolean isBookmarked(String articleId) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(
+                TABLE_NEWS,
+                new String[]{COL_BOOKMARKED},
+                COL_ID + " = ?",
+                new String[]{articleId},
+                null, null, null);
+        boolean bookmarked = false;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                bookmarked = cursor.getInt(0) == 1;
+            }
+            cursor.close();
+        }
+        return bookmarked;
+    }
+
+    /**
+     * Returns all bookmarked articles, ordered by when they were cached.
+     *
+     * @return list of bookmarked {@link NewsArticle}; empty if none saved.
+     */
+    public List<NewsArticle> getBookmarkedNews() {
+        return queryNews(
+                COL_BOOKMARKED + " = 1",
+                null,
+                COL_CACHED_AT + " DESC");
     }
 
     // ── Private helpers ───────────────────────────────────────────────────────
@@ -297,6 +368,8 @@ public class NewsDbHelper extends SQLiteOpenHelper {
 
     /** Maps a {@link Cursor} row to a {@link NewsArticle}. */
     private NewsArticle cursorToArticle(Cursor cursor) {
+        int bookmarkIdx = cursor.getColumnIndex(COL_BOOKMARKED);
+        boolean bookmarked = (bookmarkIdx >= 0) && (cursor.getInt(bookmarkIdx) == 1);
         return NewsArticle.builder()
                 .id(cursor.getString(cursor.getColumnIndexOrThrow(COL_ID)))
                 .title(cursor.getString(cursor.getColumnIndexOrThrow(COL_TITLE)))
@@ -307,6 +380,7 @@ public class NewsDbHelper extends SQLiteOpenHelper {
                 .category(cursor.getString(cursor.getColumnIndexOrThrow(COL_CATEGORY)))
                 .source(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOURCE)))
                 .cachedAt(cursor.getLong(cursor.getColumnIndexOrThrow(COL_CACHED_AT)))
+                .bookmarked(bookmarked)
                 .build();
     }
 

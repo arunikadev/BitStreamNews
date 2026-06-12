@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorSurface"
+    tools:context=".ui.bookmark.BookmarkFragment">
+
+    <!-- Pixel Toolbar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp"
+        android:background="@drawable/bg_toolbar_pixel">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/press_start_2p"
+            android:text="> SAVED_NEWS"
+            android:textColor="?attr/colorPixelHighlight"
+            android:textSize="8sp"
+            android:singleLine="true"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/btn_clear_bookmarks"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:fontFamily="@font/press_start_2p"
+            android:text="[CLR]"
+            android:textColor="?attr/colorPixelError"
+            android:textSize="6sp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="@string/cd_clear_bookmarks"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
+    <!-- Status bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/colorPixelHighlight" />
+
+        <TextView
+            android:id="@+id/tv_bookmark_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/press_start_2p"
+            android:text="0 SAVES_FOUND"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="5sp"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
+    <!-- Loading state -->
+    <LinearLayout
+        android:id="@+id/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="24dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/press_start_2p"
+            android:text="LOADING..."
+            android:textColor="?attr/colorPixelAccent"
+            android:textSize="7sp" />
+
+    </LinearLayout>
+
+    <!-- Empty state -->
+    <LinearLayout
+        android:id="@+id/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/press_start_2p"
+            android:text="[★]"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="32sp"
+            android:layout_marginBottom="24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/press_start_2p"
+            android:text="NO_SAVES_YET"
+            android:textColor="?attr/colorPixelAccent"
+            android:textSize="9sp"
+            android:textAllCaps="true"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/press_start_2p"
+            android:text="Tap [☆] on any article\nto save it here."
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="6sp"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.6"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
+    <!-- Bookmarked articles list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bookmarks"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="80dp"
+        android:scrollbars="none"
+        android:visibility="gone"
+        tools:listitem="@layout/item_news_card"
+        tools:visibility="visible" />
+
+</LinearLayout>

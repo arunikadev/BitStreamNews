@@ -19,11 +19,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bit_stream_news.MainActivity;
 import com.example.bit_stream_news.R;
+import com.example.bit_stream_news.database.NewsDbHelper;
 import com.example.bit_stream_news.model.NewsArticle;
 import com.example.bit_stream_news.repository.NewsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import android.os.Handler;
+import android.os.Looper;
 
 /**
  * HomeFeedFragment — Main news list screen.
@@ -44,7 +50,9 @@ import java.util.List;
  * Category chips: stored as TextView IDs mapped to category strings.
  * Clicking a chip calls NewsRepository.getNewsByCategory() (SQLite only).
  */
-public class HomeFeedFragment extends Fragment implements NewsAdapter.OnArticleClickListener {
+public class HomeFeedFragment extends Fragment
+        implements NewsAdapter.OnArticleClickListener,
+                   NewsAdapter.OnBookmarkClickListener {
 
     // ── Views ─────────────────────────────────────────────────────────────────
 
@@ -68,8 +76,11 @@ public class HomeFeedFragment extends Fragment implements NewsAdapter.OnArticleC
 
     // ── State ─────────────────────────────────────────────────────────────────
 
-    private NewsAdapter     adapter;
-    private NewsRepository  repository;
+    private NewsAdapter    adapter;
+    private NewsRepository repository;
+    private NewsDbHelper   dbHelper;
+    private ExecutorService bookmarkExecutor;
+    private Handler         mainHandler;
     private String          activeCategory = "all";
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
@@ -86,7 +97,10 @@ public class HomeFeedFragment extends Fragment implements NewsAdapter.OnArticleC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        repository = NewsRepository.getInstance(requireContext());
+        repository       = NewsRepository.getInstance(requireContext());
+        dbHelper         = NewsDbHelper.getInstance(requireContext());
+        bookmarkExecutor = Executors.newSingleThreadExecutor();
+        mainHandler      = new Handler(Looper.getMainLooper());
 
         bindViews(view);
         setupRecyclerView();
@@ -101,7 +115,7 @@ public class HomeFeedFragment extends Fragment implements NewsAdapter.OnArticleC
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Null out view refs to prevent leaks when Fragment is on back-stack
+        if (bookmarkExecutor != null && !bookmarkExecutor.isShutdown()) bookmarkExecutor.shutdown();
         rvNews        = null;
         layoutLoading = null;
         layoutError   = null;
@@ -124,7 +138,8 @@ public class HomeFeedFragment extends Fragment implements NewsAdapter.OnArticleC
     }
 
     private void setupRecyclerView() {
-        adapter = new NewsAdapter(this); // 'this' implements OnArticleClickListener
+        adapter = new NewsAdapter(this);
+        adapter.setBookmarkListener(this); // enable [★] button
         if (rvNews != null) {
             rvNews.setLayoutManager(new LinearLayoutManager(requireContext()));
             rvNews.setAdapter(adapter);
@@ -278,10 +293,23 @@ public class HomeFeedFragment extends Fragment implements NewsAdapter.OnArticleC
 
     @Override
     public void onArticleClick(NewsArticle article) {
-        // Delegate to host Activity which knows how to build the Intent
         Context ctx = getContext();
         if (ctx instanceof MainActivity) {
             ((MainActivity) ctx).launchNewsDetail(article);
         }
+    }
+
+    // ── NewsAdapter.OnBookmarkClickListener ───────────────────────────────────
+
+    @Override
+    public void onBookmarkClick(NewsArticle article, boolean newState) {
+        // Run DB operation on background executor, not main thread
+        bookmarkExecutor.execute(() -> {
+            if (newState) {
+                dbHelper.bookmarkArticle(article.getId());
+            } else {
+                dbHelper.removeBookmark(article.getId());
+            }
+        });
     }
 }

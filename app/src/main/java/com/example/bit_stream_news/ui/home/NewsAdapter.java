@@ -29,10 +29,14 @@ import java.util.List;
  */
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
-    // ── Click listener interface ──────────────────────────────────────────────
+    // ── Click listener interfaces ──────────────────────────────────────────────
 
     public interface OnArticleClickListener {
         void onArticleClick(NewsArticle article);
+    }
+
+    public interface OnBookmarkClickListener {
+        void onBookmarkClick(NewsArticle article, boolean newState);
     }
 
     // ── State ─────────────────────────────────────────────────────────────────
@@ -43,12 +47,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     /** Currently displayed list — may be a filtered subset of fullList. */
     private List<NewsArticle> displayList = new ArrayList<>();
 
-    private final OnArticleClickListener clickListener;
+    private final OnArticleClickListener  clickListener;
+    private       OnBookmarkClickListener bookmarkListener;
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
     public NewsAdapter(OnArticleClickListener clickListener) {
         this.clickListener = clickListener;
+    }
+
+    /** Optional — attach a bookmark listener to enable the [★] button. */
+    public void setBookmarkListener(OnBookmarkClickListener listener) {
+        this.bookmarkListener = listener;
     }
 
     // ── Data management ───────────────────────────────────────────────────────
@@ -143,6 +153,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         private final TextView  tvTime;
         private final TextView  tvCategory;
         private final View      tvNoImage;
+        private final TextView  btnBookmark;
 
         NewsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -153,6 +164,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             tvTime         = itemView.findViewById(R.id.tv_card_time);
             tvCategory     = itemView.findViewById(R.id.tv_card_category);
             tvNoImage      = itemView.findViewById(R.id.tv_no_image);
+            btnBookmark    = itemView.findViewById(R.id.btn_bookmark);
         }
 
         void bind(NewsArticle article) {
@@ -204,12 +216,25 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
                 }
             }
 
-            // Click handler
+            // Click handler (whole card)
             itemView.setOnClickListener(v -> {
                 if (clickListener != null) {
                     clickListener.onArticleClick(article);
                 }
             });
+
+            // Bookmark toggle
+            if (btnBookmark != null) {
+                btnBookmark.setText(article.isBookmarked() ? "\u2605" : "\u2606"); // ★ or ☆
+                btnBookmark.setOnClickListener(v -> {
+                    if (bookmarkListener != null) {
+                        boolean newState = !article.isBookmarked();
+                        article.setBookmarked(newState);
+                        btnBookmark.setText(newState ? "\u2605" : "\u2606");
+                        bookmarkListener.onBookmarkClick(article, newState);
+                    }
+                });
+            }
         }
 
         /** Extracts "HH:mm" from an ISO-8601 string. Returns "[--:--]" on failure. */

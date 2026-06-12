@@ -124,5 +124,10 @@
     <string name="cd_back_button">Go back to previous screen</string>
     <string name="cd_share_button">Share this article</string>
     <string name="cd_theme_toggle">Toggle between light and dark theme</string>
+    <string name="cd_bookmark_button">Save or unsave this article</string>
+    <string name="cd_clear_bookmarks">Clear all saved articles</string>
+
+    <!-- Bookmark Fragment -->
+    <string name="nav_bookmark">SAVES</string>
 
 </resources>

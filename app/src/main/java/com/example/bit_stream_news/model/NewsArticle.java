@@ -51,6 +51,9 @@ public class NewsArticle {
      */
     private long cachedAt;
 
+    /** True if the user has bookmarked/saved this article. Stored in SQLite. */
+    private boolean bookmarked;
+
     // ── Constructors ──────────────────────────────────────────────────────────
 
     /** No-arg constructor required by Gson and for manual field assignment. */
@@ -59,7 +62,7 @@ public class NewsArticle {
     /** Full constructor used by the Builder. */
     public NewsArticle(String id, String title, String description, String url,
                        String imageUrl, String publishedAt, String category,
-                       String source, long cachedAt) {
+                       String source, long cachedAt, boolean bookmarked) {
         this.id          = id;
         this.title       = title;
         this.description = description;
@@ -69,19 +72,21 @@ public class NewsArticle {
         this.category    = category;
         this.source      = source;
         this.cachedAt    = cachedAt;
+        this.bookmarked  = bookmarked;
     }
 
     // ── Getters ───────────────────────────────────────────────────────────────
 
-    public String getId()          { return id; }
-    public String getTitle()       { return title; }
-    public String getDescription() { return description; }
-    public String getUrl()         { return url; }
-    public String getImageUrl()    { return imageUrl; }
-    public String getPublishedAt() { return publishedAt; }
-    public String getCategory()    { return category; }
-    public String getSource()      { return source; }
-    public long   getCachedAt()    { return cachedAt; }
+    public String getId()           { return id; }
+    public String getTitle()        { return title; }
+    public String getDescription()  { return description; }
+    public String getUrl()          { return url; }
+    public String getImageUrl()     { return imageUrl; }
+    public String getPublishedAt()  { return publishedAt; }
+    public String getCategory()     { return category; }
+    public String getSource()       { return source; }
+    public long   getCachedAt()     { return cachedAt; }
+    public boolean isBookmarked()   { return bookmarked; }
 
     // ── Setters ───────────────────────────────────────────────────────────────
 
@@ -94,21 +99,23 @@ public class NewsArticle {
     public void setCategory(String category)       { this.category = category; }
     public void setSource(String source)           { this.source = source; }
     public void setCachedAt(long cachedAt)         { this.cachedAt = cachedAt; }
+    public void setBookmarked(boolean bookmarked)  { this.bookmarked = bookmarked; }
 
     // ── Builder ───────────────────────────────────────────────────────────────
 
     public static Builder builder() { return new Builder(); }
 
     public static final class Builder {
-        private String id;
-        private String title;
-        private String description;
-        private String url;
-        private String imageUrl;
-        private String publishedAt;
-        private String category;
-        private String source;
-        private long   cachedAt = System.currentTimeMillis();
+        private String  id;
+        private String  title;
+        private String  description;
+        private String  url;
+        private String  imageUrl;
+        private String  publishedAt;
+        private String  category;
+        private String  source;
+        private long    cachedAt   = System.currentTimeMillis();
+        private boolean bookmarked = false;
 
         public Builder id(String id)                   { this.id = id;                   return this; }
         public Builder title(String title)             { this.title = title;             return this; }
@@ -119,10 +126,11 @@ public class NewsArticle {
         public Builder category(String category)       { this.category = category;       return this; }
         public Builder source(String source)           { this.source = source;           return this; }
         public Builder cachedAt(long cachedAt)         { this.cachedAt = cachedAt;       return this; }
+        public Builder bookmarked(boolean bookmarked)  { this.bookmarked = bookmarked;   return this; }
 
         public NewsArticle build() {
             return new NewsArticle(id, title, description, url, imageUrl,
-                                   publishedAt, category, source, cachedAt);
+                                   publishedAt, category, source, cachedAt, bookmarked);
         }
     }
 

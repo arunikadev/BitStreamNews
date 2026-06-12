@@ -8,21 +8,19 @@
     ┌─────────────────────────────────────────────────────────┐
     │                    NAV GRAPH MAP                        │
     │                                                         │
-    │   [HomeFeedFragment] ──action_home_to_category──▶       │
+    │   [HomeFeedFragment] ──action_home_to_bookmark──▶       │
     │         ▲  ▲         ──action_home_to_settings──▶       │
     │         │  │                    │               │       │
-    │         │  └───action_cat_to_home   action_set_to_home  │
+    │         │  └──action_bm_to_home   action_set_to_home    │
     │         │                      │               │       │
-    │   [CategoryFragment]    [SettingsFragment] ────┘       │
-    │         │                                              │
-    │         └──action_category_to_home──────────────▶      │
+    │   [BookmarkFragment]    [SettingsFragment] ────┘        │
     └─────────────────────────────────────────────────────────┘
 
     Transitions: pixel-style linear slide (no fade/crossfade).
       Forward:  enter=slide_in_right,  exit=slide_out_left
       Pop-back: enter=slide_in_left,   exit=slide_out_right
 
-    Bottom nav tabs (Home↔Category↔Settings) are treated as
+    Bottom nav tabs (Home↔Bookmark↔Settings) are treated as
     SIBLING destinations — not a back-stack. Each action uses
     popUpTo + inclusive=true to prevent stack accumulation.
 -->
@@ -43,10 +41,10 @@
         android:label="@string/nav_feed"
         tools:layout="@layout/fragment_home_feed">
 
-        <!-- Home → Category (forward slide) -->
+        <!-- Home → Bookmark (forward slide) -->
         <action
-            android:id="@+id/action_home_to_category"
-            app:destination="@id/categoryFragment"
+            android:id="@+id/action_home_to_bookmark"
+            app:destination="@id/bookmarkFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -70,18 +68,18 @@
     </fragment>
 
     <!-- ═══════════════════════════════════════════════════════
-         CATEGORY FRAGMENT
-         Browse news categories (game level-select grid)
+         BOOKMARK FRAGMENT
+         Saved/bookmarked articles list
          ═══════════════════════════════════════════════════════ -->
     <fragment
-        android:id="@+id/categoryFragment"
-        android:name="com.example.bit_stream_news.ui.category.CategoryFragment"
-        android:label="@string/nav_browse"
-        tools:layout="@layout/fragment_category">
+        android:id="@+id/bookmarkFragment"
+        android:name="com.example.bit_stream_news.ui.bookmark.BookmarkFragment"
+        android:label="@string/nav_bookmark"
+        tools:layout="@layout/fragment_bookmark">
 
-        <!-- Category → Home (back slide — left-to-right) -->
+        <!-- Bookmark → Home (back slide) -->
         <action
-            android:id="@+id/action_category_to_home"
+            android:id="@+id/action_bookmark_to_home"
             app:destination="@id/homeFeedFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
@@ -91,9 +89,9 @@
             app:popUpToInclusive="true"
             app:launchSingleTop="true" />
 
-        <!-- Category → Settings (forward slide) -->
+        <!-- Bookmark → Settings (forward slide) -->
         <action
-            android:id="@+id/action_category_to_settings"
+            android:id="@+id/action_bookmark_to_settings"
             app:destination="@id/settingsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -127,10 +125,10 @@
             app:popUpToInclusive="true"
             app:launchSingleTop="true" />
 
-        <!-- Settings → Category (back slide) -->
+        <!-- Settings → Bookmark (back slide) -->
         <action
-            android:id="@+id/action_settings_to_category"
-            app:destination="@id/categoryFragment"
+            android:id="@+id/action_settings_to_bookmark"
+            app:destination="@id/bookmarkFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
